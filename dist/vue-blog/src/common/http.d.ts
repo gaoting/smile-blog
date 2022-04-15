@@ -1,5 +1,5 @@
-import { AxiosPromise } from "axios";
-export declare const get: (url: string, params: any) => AxiosPromise;
-export declare const post: (url: string, data: any) => AxiosPromise;
-export declare const update: (url: string, data: any) => AxiosPromise;
-export declare const remove: (url: string) => AxiosPromise;
+import { AxiosResponse } from "axios";
+export declare const get: (url: string, params: any) => Promise<AxiosResponse<any, any>>;
+export declare const post: (url: string, data: any) => Promise<AxiosResponse<any, any>>;
+export declare const update: (url: string, data: any) => Promise<AxiosResponse<any, any>>;
+export declare const remove: (url: string) => Promise<AxiosResponse<any, any>>;

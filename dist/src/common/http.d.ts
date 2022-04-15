@@ -1,6 +1,5 @@
 export declare class http {
-    resultCode: number;
-    code: number;
+    // code: number;
     message: string;
     dataArray: Array<any>;
     data: any;

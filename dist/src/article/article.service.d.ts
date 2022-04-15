@@ -1,5 +1,5 @@
-import { Repository } from 'typeorm';
-import { Article } from './article.entity';
+import { Repository } from "typeorm";
+import { Article } from "./article.entity";
 export declare class ArticleService {
     private readonly articleService;
     constructor(articleService: Repository<Article>);

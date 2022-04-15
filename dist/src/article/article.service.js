@@ -17,50 +17,40 @@ const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
 const article_entity_1 = require("./article.entity");
 const common_1 = require("@nestjs/common");
-const http_1 = require("../common/http");
 let ArticleService = class ArticleService {
     constructor(articleService) {
         this.articleService = articleService;
     }
     async findAll() {
-        const res = new http_1.http();
-        res.resultCode = 200;
         const list = await this.articleService.find();
-        console.log(list);
-        res.data = {
-            list: list,
-        };
-        return res;
+        console.log(list, typeof list, "+++++++++");
+        return list;
     }
     async create(obj) {
-        const res = new http_1.http();
         let info = await this.articleService.insert(obj);
-        res.code = 200;
-        res.data = [];
         if (info) {
-            res.message = '新增ok';
+            return "更新ok";
         }
         else {
-            res.message = '新增失败';
+            return "更新失败";
         }
-        return res;
     }
     async update(id, cat) {
         let list = await this.articleService.update(id, cat);
         if (list) {
-            return '更新ok';
+            return "更新ok";
         }
         else {
-            return '更新失败';
+            return "更新失败";
         }
     }
     async delete(id) {
         let list = await this.articleService.delete(id);
         if (list) {
-            return '删除ok';
+            return "删除ok";
         }
         else {
-            return '删除失败';
+            return "删除失败";
         }
     }
 };

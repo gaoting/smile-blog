@@ -4,6 +4,7 @@ const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const swagger_1 = require("@nestjs/swagger");
 const filters_1 = require("./common/filters");
+const transform_interceptor_1 = require("./common/transform.interceptor");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
@@ -14,7 +15,8 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, options);
     swagger_1.SwaggerModule.setup('api', app, document);
-    app.useGlobalFilters(new filters_1.HttpExceptionFilter());
+    await app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
+    await app.useGlobalFilters(new filters_1.HttpExceptionFilter());
     await app.listen(3006);
 }
 bootstrap();

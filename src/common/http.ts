@@ -1,5 +1,5 @@
 export class http {
-  resultCode: number;
+  // resultCode: number;
   code: number;
   message: string;
   dataArray: Array<any>;

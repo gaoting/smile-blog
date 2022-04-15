@@ -24,7 +24,7 @@ let ArticleService = class ArticleService {
     }
     async findAll() {
         const res = new http_1.http();
-        res.resultCode = 200;
+        // res.resultCode = 200;
         const list = await this.articleService.find();
         res.data = {
             list: list,
