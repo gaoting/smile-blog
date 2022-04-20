@@ -6,24 +6,29 @@ import {
   Delete,
   Query,
   Body,
-  Res,
-  HttpStatus,
-  ExecutionContext,
-  NestInterceptor,
-  UseGuards,
+  Param,
 } from "@nestjs/common";
-// import { Roles } from '../common/roles.decorator';
 import { ApiTags } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
 
 @ApiTags("Article")
-@Controller("article")
+@Controller("api/article")
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Get("list")
-  findAll() {
-    return this.articleService.findAll();
+  findAll(@Query() query): Promise<any> {
+    return this.articleService.findAll(query);
+  }
+
+  @Get("list:id")
+  findById(@Param("id") id) {
+    return this.articleService.findById(id);
+  }
+
+  @Get("searchList")
+  searchList(@Query() query): Promise<any> {
+    return this.articleService.searchNum(query);
   }
 
   @Post("add")
@@ -37,7 +42,7 @@ export class ArticleController {
   }
 
   @Delete("delete")
-  delete(@Query("id") id, @Body() body): Promise<String> {
+  delete(@Query("id") id): Promise<String> {
     return this.articleService.delete(id);
   }
 }

@@ -5,22 +5,32 @@ const routes = [
     {
         path: "/",
         name: "Home",
-        component: () => Promise.resolve().then(() => require("../views/home/index.vue")),
+        component: () => Promise.resolve().then(() => require("../views/public/index.vue")),
     },
     {
-        path: "/vue",
-        name: "Vue",
+        path: "/frondPage",
+        name: "FrondPage",
         component: () => Promise.resolve().then(() => require("../views/public/index.vue")),
+    },
+    {
+        path: "/backstage",
+        name: "Backstage",
+        component: () => Promise.resolve().then(() => require("../views/public/backstage.vue")),
+    },
+    {
+        path: "/content",
+        name: "Content",
+        component: () => Promise.resolve().then(() => require("../views/public/content.vue")),
+    },
+    {
+        path: "/test",
+        name: "Test",
+        component: () => Promise.resolve().then(() => require("../views/test/index.vue")),
     },
 ];
 const routerConfig = {
-    history: (0, vue_router_1.createWebHashHistory)(),
+    history: (0, vue_router_1.createWebHistory)(),
     routes,
-    scrollBehavior(to, from) {
-        if (to.path !== from.path) {
-            return { top: 0 };
-        }
-    },
 };
 const router = (0, vue_router_1.createRouter)(routerConfig);
 exports.default = router;

@@ -20,8 +20,14 @@ let ArticleController = class ArticleController {
     constructor(articleService) {
         this.articleService = articleService;
     }
-    findAll() {
-        return this.articleService.findAll();
+    findAll(query) {
+        return this.articleService.findAll(query);
+    }
+    findById(id) {
+        return this.articleService.findById(id);
+    }
+    searchList(query) {
+        return this.articleService.searchNum(query);
     }
     create(body) {
         this.articleService.create(body);
@@ -29,16 +35,31 @@ let ArticleController = class ArticleController {
     updateOne(id, body) {
         return this.articleService.update(id, body);
     }
-    delete(id, body) {
+    delete(id) {
         return this.articleService.delete(id);
     }
 };
 __decorate([
     (0, common_1.Get)("list"),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("list:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ArticleController.prototype, "findById", null);
+__decorate([
+    (0, common_1.Get)("searchList"),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ArticleController.prototype, "searchList", null);
 __decorate([
     (0, common_1.Post)("add"),
     __param(0, (0, common_1.Body)()),
@@ -57,14 +78,13 @@ __decorate([
 __decorate([
     (0, common_1.Delete)("delete"),
     __param(0, (0, common_1.Query)("id")),
-    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "delete", null);
 ArticleController = __decorate([
     (0, swagger_1.ApiTags)("Article"),
-    (0, common_1.Controller)("article"),
+    (0, common_1.Controller)("api/article"),
     __metadata("design:paramtypes", [article_service_1.ArticleService])
 ], ArticleController);
 exports.ArticleController = ArticleController;

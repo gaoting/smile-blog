@@ -11,20 +11,59 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleService = void 0;
-const typeorm_1 = require("typeorm");
-const typeorm_2 = require("@nestjs/typeorm");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
 const article_entity_1 = require("./article.entity");
 const common_1 = require("@nestjs/common");
 let ArticleService = class ArticleService {
     constructor(articleService) {
         this.articleService = articleService;
     }
-    async findAll() {
-        const list = await this.articleService.find();
-        console.log(list, typeof list, "+++++++++");
-        return list;
+    async findAll(query) {
+        console.log(query, "---------");
+        const qb = await this.articleService.createQueryBuilder("article");
+        qb.where("1=1");
+        qb.orderBy("article.updateTime", "DESC");
+        const total = await qb.getCount();
+        const { current = 1, pageSize = 10 } = query, params = __rest(query, ["current", "pageSize"]);
+        qb.limit(pageSize);
+        qb.andWhere(params);
+        qb.offset(pageSize * (current - 1));
+        const posts = await qb.getMany();
+        console.log(posts, "=======================");
+        return {
+            list: posts,
+            total: posts.length,
+            pageSize: pageSize,
+            current: current,
+        };
+    }
+    async findById(id) {
+        return await this.articleService.findOne(id);
+    }
+    async searchNum(query) {
+        console.log(query, "----------111");
+        const qb = await this.articleService
+            .createQueryBuilder("article")
+            .limit(10);
+        qb.where("1=1");
+        qb.andWhere(query);
+        qb.orderBy("article.lookNum", "DESC");
+        const posts = await qb.getMany();
+        return { list: posts };
     }
     async create(obj) {
         let info = await this.articleService.insert(obj);
@@ -56,8 +95,8 @@ let ArticleService = class ArticleService {
 };
 ArticleService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_2.InjectRepository)(article_entity_1.Article)),
-    __metadata("design:paramtypes", [typeorm_1.Repository])
+    __param(0, (0, typeorm_1.InjectRepository)(article_entity_1.Article)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], ArticleService);
 exports.ArticleService = ArticleService;
 //# sourceMappingURL=article.service.js.map

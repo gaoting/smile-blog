@@ -5,7 +5,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class Article {
@@ -32,6 +32,18 @@ export class Article {
 
   @Column()
   content: string;
+
+  @Column()
+  url: string;
+
+  // @Column()
+  // pageSize: number;
+
+  // @Column()
+  // current: number;
+
+  // @Column()
+  // total: number
 
   @CreateDateColumn()
   createTime: string;

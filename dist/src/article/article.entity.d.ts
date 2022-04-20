@@ -7,6 +7,7 @@ export declare class Article {
     title: string;
     description: string;
     content: string;
+    url: string;
     createTime: string;
     updateTime: string;
 }

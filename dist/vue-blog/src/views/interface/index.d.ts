@@ -7,6 +7,7 @@ interface Articles {
     title: string;
     description: string;
     content: string;
+    url: string;
     createTime: string;
     updateTime: string;
 }

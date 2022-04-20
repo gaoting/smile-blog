@@ -13,11 +13,10 @@ http.interceptors.request.use((config) => {
 });
 http.interceptors.response.use((res) => {
     const { data } = res;
-    console.log(data, "resssssssssss");
     if (data.code !== 200) {
         ant_design_vue_1.message.error(data.message);
     }
-    return data.data;
+    return data;
 }, (error) => {
     return Promise.reject(error);
 });
