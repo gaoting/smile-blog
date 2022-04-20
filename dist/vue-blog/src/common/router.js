@@ -10,7 +10,7 @@ const routes = [
     {
         path: "/frondPage",
         name: "FrondPage",
-        component: () => Promise.resolve().then(() => require("../views/public/index.vue")),
+        component: () => Promise.resolve().then(() => require("../views/public/frondPage.vue")),
     },
     {
         path: "/backstage",
