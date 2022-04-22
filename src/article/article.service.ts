@@ -13,7 +13,7 @@ export class ArticleService {
 
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
-    console.log(query, "---------");
+    console.log(query, "---------222222");
 
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
@@ -38,22 +38,31 @@ export class ArticleService {
 
   // 获取指定id
   async findById(id: number): Promise<any> {
-    return await this.articleService.findOne(id);
+    console.log(id, "----------111");
+    const qb = await this.articleService.createQueryBuilder("article").limit(1);
+    qb.where("1=1");
+    qb.andWhere({ id: id });
+    const posts = await qb.getMany();
+    console.log(posts, "00000000000000000000");
+    return { list: posts };
   }
 
   // 根据条件查询列表  不带分页
   async searchNum(query?: any): Promise<any> {
-    console.log(query, "----------111");
+    console.log(query, "---------3333");
 
-    const qb = await this.articleService
-      .createQueryBuilder("article")
-      .limit(10);
-
+    const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
-    qb.andWhere(query);
     qb.orderBy("article.lookNum", "DESC");
+
+    qb.andWhere(query);
+
     const posts = await qb.getMany();
-    return { list: posts };
+    console.log(posts, "==================33333");
+
+    return {
+      list: posts,
+    };
   }
 
   // 创建

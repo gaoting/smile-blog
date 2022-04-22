@@ -21,8 +21,8 @@ export class ArticleController {
     return this.articleService.findAll(query);
   }
 
-  @Get("list:id")
-  findById(@Param("id") id) {
+  @Get(":id")
+  findById(@Query("id") id): Promise<any> {
     return this.articleService.findById(id);
   }
 
