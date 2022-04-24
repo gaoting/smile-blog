@@ -47,7 +47,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(":id"),
+    (0, common_1.Get)("content"),
     __param(0, (0, common_1.Query)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

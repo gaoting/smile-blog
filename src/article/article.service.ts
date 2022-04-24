@@ -13,8 +13,6 @@ export class ArticleService {
 
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
-    console.log(query, "---------222222");
-
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
     qb.orderBy("article.updateTime", "DESC");
@@ -26,36 +24,32 @@ export class ArticleService {
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
-    console.log(posts, "=======================");
 
-    return {
+    let data = {
       list: posts,
       total: posts.length,
       pageSize: pageSize,
       current: current,
     };
+    return params.id ? posts[0] : data;
   }
 
   // 获取指定id
   async findById(id: number): Promise<any> {
-    console.log(id, "----------111");
-    const qb = await this.articleService.createQueryBuilder("article").limit(1);
-    qb.where("1=1");
-    qb.andWhere({ id: id });
-    const posts = await qb.getMany();
-    console.log(posts, "00000000000000000000");
-    return { list: posts };
+    let a = await this.articleService.findOne(id);
+    let b = await this.articleService.find({ where: { id: id }, skip: 1 });
+    console.log(b, "dddddddddddddddd");
+
+    return a;
   }
 
   // 根据条件查询列表  不带分页
   async searchNum(query?: any): Promise<any> {
-    console.log(query, "---------3333");
-
+    console.log(query, "---------3333444");
     const qb = await this.articleService.createQueryBuilder("article");
-    qb.where("1=1");
+    // qb.where("1=1");
     qb.orderBy("article.lookNum", "DESC");
-
-    qb.andWhere(query);
+    qb.where(query);
 
     const posts = await qb.getMany();
     console.log(posts, "==================33333");
