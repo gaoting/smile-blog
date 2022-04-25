@@ -17,7 +17,7 @@ import { Article } from "./article/article.entity";
       database: "smile_blog",
       entities: [Article],
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       logging: "all",
     }),
   ],

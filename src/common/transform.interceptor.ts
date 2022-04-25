@@ -3,9 +3,12 @@ import {
   NestInterceptor,
   CallHandler,
   ExecutionContext,
+  RequestTimeoutException,
 } from "@nestjs/common";
 import { map } from "rxjs/operators";
-import { Observable } from "rxjs";
+import { Observable, throwError, TimeoutError } from "rxjs";
+import { catchError, timeout } from "rxjs/operators";
+
 interface Response<T> {
   data: T;
 }
@@ -17,9 +20,9 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>
   ): Observable<Response<T>> {
+   
     return next.handle().pipe(
       map((data) => {
-        console.log(data);
         return {
           data,
           code: 200,

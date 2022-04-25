@@ -1,8 +1,15 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, getRepository, DeleteResult } from "typeorm";
 import { Article } from "./article.entity";
-import { Injectable } from "@nestjs/common";
-import { http } from "src/common/http";
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
+// import { http } from "src/common/http";
+// const multer = require("multer");
+// const fs = require("fs");
+const fsExtra = require("fs-extra");
+const fileRootPath = "./images";
+const glob = require("glob");
+// import { getNowTime } from "../filters/time";
+import { CreateDto } from "./create.dto";
 
 @Injectable()
 export class ArticleService {
@@ -36,18 +43,41 @@ export class ArticleService {
 
   // 获取指定id
   async findById(id: number): Promise<any> {
-    let a = await this.articleService.findOne(id);
-    let b = await this.articleService.find({ where: { id: id }, skip: 1 });
-    console.log(b, "dddddddddddddddd");
+    const qb = this.articleService
+      .createQueryBuilder("article")
+      .where("article.id=:id")
+      .setParameter("id", id);
 
-    return a;
+    const result = await qb.getOne();
+    if (!result)
+      throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
+    await this.articleService.update(id, { lookNum: result.lookNum + 1 });
+
+    return result;
+  }
+
+  // 收藏
+  async setLove(obj: any): Promise<any> {
+
+    const { id, loveNum } = obj;
+    const qb = this.articleService
+      .createQueryBuilder("article")
+      .where("article.id=:id")
+      .setParameter("id", id);
+
+    const result = await qb.getOne();
+    console.log(result.loveNum);
+    if (!result)
+      throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
+    await this.articleService.update(id, { loveNum: result.loveNum + 1 });
+
+    return result;
   }
 
   // 根据条件查询列表  不带分页
   async searchNum(query?: any): Promise<any> {
     console.log(query, "---------3333444");
     const qb = await this.articleService.createQueryBuilder("article");
-    // qb.where("1=1");
     qb.orderBy("article.lookNum", "DESC");
     qb.where(query);
 
@@ -60,24 +90,40 @@ export class ArticleService {
   }
 
   // 创建
-  async create(obj: any): Promise<any> {
-    let info = await this.articleService.insert(obj);
+  async create(obj: CreateDto): Promise<any> {
+    let article = new Article();
+    try {
+      article.title = obj.title;
+      article.tags = obj.tags;
+      article.author = obj.author;
+      article.types = obj.types;
+      article.content = obj.content;
+      article.description = obj.description
+        ? obj.description
+        : obj.content?.substring(0, 300);
 
-    if (info) {
-      return "更新ok";
-    } else {
-      return "更新失败";
+      const newArticle = await this.articleService.save(article);
+      return { data: newArticle, message: "创建ok" };
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      return { message: error };
     }
   }
 
   // 更新
-  async update(id, cat): Promise<String> {
-    let list = await this.articleService.update(id, cat);
-    if (list) {
-      return "更新ok";
-    } else {
-      return "更新失败";
-    }
+  async updated(obj: CreateDto): Promise<any> {
+    const { id, ...params } = obj;
+    const qb = this.articleService
+      .createQueryBuilder("article")
+      .where("article.id=:id")
+      .setParameter("id", id);
+
+    const result = await qb.getOne();
+    if (!result)
+      throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
+    await this.articleService.update(id, params);
+
+    return result;
   }
 
   // 删除
@@ -88,5 +134,19 @@ export class ArticleService {
     } else {
       return "删除失败";
     }
+  }
+
+  async findAllImg(): Promise<any> {
+    // 获取图片列表api
+    const files = glob.sync(`${fileRootPath}/upload/*`);
+    const imageFiles = files.map((item) => {
+      // 在这里是对获取的api列表做了一些处理方便前台读取
+      return `/api/upload${item.split("image")[1]}`;
+    });
+    return imageFiles;
+  }
+
+  removeImage(directoryPath: string) {
+    fsExtra.removeSync(`${fileRootPath}/upload/${directoryPath}`);
   }
 }

@@ -28,7 +28,7 @@ AppModule = __decorate([
                 database: "smile_blog",
                 entities: [article_entity_1.Article],
                 autoLoadEntities: true,
-                synchronize: false,
+                synchronize: true,
                 logging: "all",
             }),
         ],

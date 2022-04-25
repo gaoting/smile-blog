@@ -6,21 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransformInterceptor = void 0;
+exports.FileUploadModule = void 0;
 const common_1 = require("@nestjs/common");
-const operators_1 = require("rxjs/operators");
-let TransformInterceptor = class TransformInterceptor {
-    intercept(context, next) {
-        return next.handle().pipe((0, operators_1.map)((data) => {
-            return {
-                data,
-                code: 200,
-                message: "请求成功",
-            };
-        }));
-    }
+const file_upload_service_1 = require("./file-upload.service");
+const file_upload_controller_1 = require("./file-upload.controller");
+const minio_client_module_1 = require("../minio-client/minio-client.module");
+let FileUploadModule = class FileUploadModule {
 };
-TransformInterceptor = __decorate([
-    (0, common_1.Injectable)()
-], TransformInterceptor);
-exports.TransformInterceptor = TransformInterceptor;
+FileUploadModule = __decorate([
+    (0, common_1.Module)({
+        imports: [
+            minio_client_module_1.MinioClientModule
+        ],
+        providers: [file_upload_service_1.FileUploadService],
+        controllers: [file_upload_controller_1.FileUploadController]
+    })
+], FileUploadModule);
+exports.FileUploadModule = FileUploadModule;

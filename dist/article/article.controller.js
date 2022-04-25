@@ -16,6 +16,11 @@ exports.ArticleController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const article_service_1 = require("./article.service");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer = require("multer");
+const fs = require("fs");
+const fsExtra = require("fs-extra");
+const fileRootPath = "./images";
 let ArticleController = class ArticleController {
     constructor(articleService) {
         this.articleService = articleService;
@@ -32,11 +37,27 @@ let ArticleController = class ArticleController {
     create(body) {
         this.articleService.create(body);
     }
-    updateOne(id, body) {
-        return this.articleService.update(id, body);
+    updateOne(body) {
+        return this.articleService.updated(body);
+    }
+    updateNum(body) {
+        console.log(body, "qqqqqqqqqqqqqqq");
+        return this.articleService.setLove(body);
     }
     delete(id) {
         return this.articleService.delete(id);
+    }
+    findAllImg() {
+        return this.articleService.findAllImg();
+    }
+    uploadPic(file) {
+        console.log(file);
+        return {
+            file,
+        };
+    }
+    async remove(path) {
+        return await this.articleService.removeImage(path);
     }
 };
 __decorate([
@@ -69,12 +90,18 @@ __decorate([
 ], ArticleController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)("update"),
-    __param(0, (0, common_1.Query)("id")),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "updateOne", null);
+__decorate([
+    (0, common_1.Put)("updateNum"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ArticleController.prototype, "updateNum", null);
 __decorate([
     (0, common_1.Delete)("delete"),
     __param(0, (0, common_1.Query)("id")),
@@ -82,6 +109,43 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "delete", null);
+__decorate([
+    (0, common_1.Get)("getImgList"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ArticleController.prototype, "findAllImg", null);
+__decorate([
+    (0, common_1.Post)("upload"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file", {
+        storage: multer.diskStorage({
+            destination: async (req, file, cb) => {
+                const path = `${fileRootPath}/upload`;
+                await fsExtra.ensureDir(path);
+                if (!fs.existsSync(path)) {
+                    fs.mkdirSync(path);
+                }
+                cb(null, path);
+            },
+            filename: (req, file, cb) => {
+                cb(null, file.originalname);
+            },
+        }),
+    })),
+    (0, swagger_1.ApiOperation)({ summary: "上传图片" }),
+    __param(0, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ArticleController.prototype, "uploadPic", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: "删除图片" }),
+    (0, common_1.Delete)("delete/:path"),
+    __param(0, (0, common_1.Param)("path")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ArticleController.prototype, "remove", null);
 ArticleController = __decorate([
     (0, swagger_1.ApiTags)("Article"),
     (0, common_1.Controller)("api/article"),

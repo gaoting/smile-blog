@@ -28,6 +28,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const article_entity_1 = require("./article.entity");
 const common_1 = require("@nestjs/common");
+const fsExtra = require("fs-extra");
+const fileRootPath = "./images";
+const glob = require("glob");
 let ArticleService = class ArticleService {
     constructor(articleService) {
         this.articleService = articleService;
@@ -51,10 +54,28 @@ let ArticleService = class ArticleService {
         return params.id ? posts[0] : data;
     }
     async findById(id) {
-        let a = await this.articleService.findOne(id);
-        let b = await this.articleService.find({ where: { id: id }, skip: 1 });
-        console.log(b, "dddddddddddddddd");
-        return a;
+        const qb = this.articleService
+            .createQueryBuilder("article")
+            .where("article.id=:id")
+            .setParameter("id", id);
+        const result = await qb.getOne();
+        if (!result)
+            throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
+        await this.articleService.update(id, { lookNum: result.lookNum + 1 });
+        return result;
+    }
+    async setLove(obj) {
+        const { id, loveNum } = obj;
+        const qb = this.articleService
+            .createQueryBuilder("article")
+            .where("article.id=:id")
+            .setParameter("id", id);
+        const result = await qb.getOne();
+        console.log(result.loveNum);
+        if (!result)
+            throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
+        await this.articleService.update(id, { loveNum: result.loveNum + 1 });
+        return result;
     }
     async searchNum(query) {
         console.log(query, "---------3333444");
@@ -68,22 +89,36 @@ let ArticleService = class ArticleService {
         };
     }
     async create(obj) {
-        let info = await this.articleService.insert(obj);
-        if (info) {
-            return "更新ok";
+        var _a;
+        let article = new article_entity_1.Article();
+        try {
+            article.title = obj.title;
+            article.tags = obj.tags;
+            article.author = obj.author;
+            article.types = obj.types;
+            article.content = obj.content;
+            article.description = obj.description
+                ? obj.description
+                : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);
+            const newArticle = await this.articleService.save(article);
+            return { data: newArticle, message: "创建ok" };
         }
-        else {
-            return "更新失败";
+        catch (error) {
+            throw new common_1.HttpException(error, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            return { message: error };
         }
     }
-    async update(id, cat) {
-        let list = await this.articleService.update(id, cat);
-        if (list) {
-            return "更新ok";
-        }
-        else {
-            return "更新失败";
-        }
+    async updated(obj) {
+        const { id } = obj, params = __rest(obj, ["id"]);
+        const qb = this.articleService
+            .createQueryBuilder("article")
+            .where("article.id=:id")
+            .setParameter("id", id);
+        const result = await qb.getOne();
+        if (!result)
+            throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
+        await this.articleService.update(id, params);
+        return result;
     }
     async delete(id) {
         let list = await this.articleService.delete(id);
@@ -93,6 +128,16 @@ let ArticleService = class ArticleService {
         else {
             return "删除失败";
         }
+    }
+    async findAllImg() {
+        const files = glob.sync(`${fileRootPath}/upload/*`);
+        const imageFiles = files.map((item) => {
+            return `/api/upload${item.split("image")[1]}`;
+        });
+        return imageFiles;
+    }
+    removeImage(directoryPath) {
+        fsExtra.removeSync(`${fileRootPath}/upload/${directoryPath}`);
     }
 };
 ArticleService = __decorate([

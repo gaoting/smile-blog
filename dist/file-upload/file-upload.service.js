@@ -6,21 +6,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransformInterceptor = void 0;
+exports.FileUploadService = void 0;
 const common_1 = require("@nestjs/common");
-const operators_1 = require("rxjs/operators");
-let TransformInterceptor = class TransformInterceptor {
-    intercept(context, next) {
-        return next.handle().pipe((0, operators_1.map)((data) => {
-            return {
-                data,
-                code: 200,
-                message: "请求成功",
-            };
-        }));
-    }
+let FileUploadService = class FileUploadService {
 };
-TransformInterceptor = __decorate([
+FileUploadService = __decorate([
     (0, common_1.Injectable)()
-], TransformInterceptor);
-exports.TransformInterceptor = TransformInterceptor;
+], FileUploadService);
+exports.FileUploadService = FileUploadService;

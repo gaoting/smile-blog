@@ -18,43 +18,53 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "author", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "tags", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "types", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "int", default: 0, nullable: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "lookNum", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "int", default: 0, nullable: true }),
+    __metadata("design:type", Number)
+], Article.prototype, "loveNum", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "text", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "url", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({
+        type: "timestamp",
+        nullable: true,
+    }),
     __metadata("design:type", String)
 ], Article.prototype, "createTime", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({
+        type: "timestamp",
+        nullable: true,
+    }),
     __metadata("design:type", String)
 ], Article.prototype, "updateTime", void 0);
 Article = __decorate([
