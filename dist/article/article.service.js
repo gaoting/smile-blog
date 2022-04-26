@@ -66,22 +66,26 @@ let ArticleService = class ArticleService {
     }
     async setLove(obj) {
         const { id, loveNum } = obj;
-        const qb = this.articleService
-            .createQueryBuilder("article")
-            .where("article.id=:id")
-            .setParameter("id", id);
-        const result = await qb.getOne();
-        console.log(result.loveNum);
-        if (!result)
-            throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
-        await this.articleService.update(id, { loveNum: result.loveNum + 1 });
-        return result;
+        await this.articleService.update(id, { loveNum: loveNum });
+        let data = await this.articleService.findOne(id);
+        return data;
     }
     async searchNum(query) {
-        console.log(query, "---------3333444");
-        const qb = await this.articleService.createQueryBuilder("article");
-        qb.orderBy("article.lookNum", "DESC");
-        qb.where(query);
+        let qb = await this.articleService.createQueryBuilder("article");
+        qb.where("1=1");
+        if (query && query.orderByDesc) {
+            switch (query.orderByDesc[0]) {
+                case "lookNum":
+                    qb.orderBy("article.lookNum", "DESC");
+                    break;
+                case "loveNum":
+                    qb.orderBy("article.loveNum", "DESC");
+                    break;
+                default:
+                    qb.orderBy("article.updateTime", "DESC");
+            }
+        }
+        qb.limit(10);
         const posts = await qb.getMany();
         console.log(posts, "==================33333");
         return {

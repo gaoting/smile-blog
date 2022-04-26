@@ -6,9 +6,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransformInterceptor = void 0;
+exports.HttpExceptionFilter = exports.TransformInterceptor = void 0;
 const common_1 = require("@nestjs/common");
 const operators_1 = require("rxjs/operators");
+const common_2 = require("@nestjs/common");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
         return next.handle().pipe((0, operators_1.map)((data) => {
@@ -24,3 +25,25 @@ TransformInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], TransformInterceptor);
 exports.TransformInterceptor = TransformInterceptor;
+let HttpExceptionFilter = class HttpExceptionFilter {
+    catch(exception, host) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse();
+        const status = exception.getStatus();
+        const message = exception.message
+            ? exception.message
+            : `${status >= 500 ? 'Service Error' : 'Client Error'}`;
+        const errorResponse = {
+            data: {},
+            message: message,
+            code: -1,
+        };
+        response.status(status);
+        response.header('Content-Type', 'application/json; charset=utf-8');
+        response.send(errorResponse);
+    }
+};
+HttpExceptionFilter = __decorate([
+    (0, common_2.Catch)(common_2.HttpException)
+], HttpExceptionFilter);
+exports.HttpExceptionFilter = HttpExceptionFilter;

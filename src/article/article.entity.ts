@@ -39,6 +39,9 @@ export class Article {
   @Column({ type: "varchar", length: 255, default: "", nullable: true })
   url: string;
 
+  @Column({ nullable: true, type: "simple-array"})
+  orderByDesc: object;
+
   @CreateDateColumn({
     type: "timestamp",
     nullable: true,

@@ -58,28 +58,31 @@ export class ArticleService {
 
   // 收藏
   async setLove(obj: any): Promise<any> {
-
     const { id, loveNum } = obj;
-    const qb = this.articleService
-      .createQueryBuilder("article")
-      .where("article.id=:id")
-      .setParameter("id", id);
 
-    const result = await qb.getOne();
-    console.log(result.loveNum);
-    if (!result)
-      throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
-    await this.articleService.update(id, { loveNum: result.loveNum + 1 });
+    await this.articleService.update(id, { loveNum: loveNum });
+    let data = await this.articleService.findOne(id);
 
-    return result;
+    return data;
   }
 
   // 根据条件查询列表  不带分页
   async searchNum(query?: any): Promise<any> {
-    console.log(query, "---------3333444");
-    const qb = await this.articleService.createQueryBuilder("article");
-    qb.orderBy("article.lookNum", "DESC");
-    qb.where(query);
+    let qb = await this.articleService.createQueryBuilder("article");
+    qb.where("1=1");
+    if (query && query.orderByDesc) {
+      switch (query.orderByDesc[0]) {
+        case "lookNum":
+          qb.orderBy("article.lookNum", "DESC");
+          break;
+        case "loveNum":
+          qb.orderBy("article.loveNum", "DESC");
+          break;
+        default:
+          qb.orderBy("article.updateTime", "DESC");
+      }
+    }
+    qb.limit(10);
 
     const posts = await qb.getMany();
     console.log(posts, "==================33333");
