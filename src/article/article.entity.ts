@@ -37,7 +37,7 @@ export class Article {
   content: string;
 
   @Column({ type: "varchar", length: 255, default: "", nullable: true })
-  url: string;
+  picture: string;
 
   @Column({ nullable: true, type: "simple-array"})
   orderByDesc: object;

@@ -47,7 +47,7 @@ let ArticleService = class ArticleService {
         const posts = await qb.getMany();
         let data = {
             list: posts,
-            total: posts.length,
+            total: total,
             pageSize: pageSize,
             current: current,
         };
@@ -85,6 +85,7 @@ let ArticleService = class ArticleService {
                     qb.orderBy("article.updateTime", "DESC");
             }
         }
+        qb.addOrderBy("article.updateTime", "DESC");
         qb.limit(10);
         const posts = await qb.getMany();
         console.log(posts, "==================33333");

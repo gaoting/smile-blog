@@ -52,7 +52,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
     __metadata("design:type", String)
-], Article.prototype, "url", void 0);
+], Article.prototype, "picture", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, type: "simple-array" }),
     __metadata("design:type", Object)

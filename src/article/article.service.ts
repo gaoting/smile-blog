@@ -34,7 +34,7 @@ export class ArticleService {
 
     let data = {
       list: posts,
-      total: posts.length,
+      total: total,
       pageSize: pageSize,
       current: current,
     };
@@ -82,6 +82,7 @@ export class ArticleService {
           qb.orderBy("article.updateTime", "DESC");
       }
     }
+    qb.addOrderBy("article.updateTime", "DESC");
     qb.limit(10);
 
     const posts = await qb.getMany();
