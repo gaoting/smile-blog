@@ -39,6 +39,9 @@ export class Article {
   @Column({ type: "varchar", length: 255, default: "", nullable: true })
   picture: string;
 
+  @Column({ type: "varchar", length: 2, default: "2", nullable: true })
+  activeKey: string;
+
   @Column({ nullable: true, type: "simple-array"})
   orderByDesc: object;
 

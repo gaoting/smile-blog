@@ -102,6 +102,7 @@ export class ArticleService {
       article.author = obj.author;
       article.types = obj.types;
       article.content = obj.content;
+      article.activeKey = obj.activeKey;
       article.description = obj.description
         ? obj.description
         : obj.content?.substring(0, 300);

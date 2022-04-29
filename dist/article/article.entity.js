@@ -54,6 +54,10 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "picture", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 2, default: "2", nullable: true }),
+    __metadata("design:type", String)
+], Article.prototype, "activeKey", void 0);
+__decorate([
     (0, typeorm_1.Column)({ nullable: true, type: "simple-array" }),
     __metadata("design:type", Object)
 ], Article.prototype, "orderByDesc", void 0);

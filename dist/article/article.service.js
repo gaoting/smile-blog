@@ -102,6 +102,7 @@ let ArticleService = class ArticleService {
             article.author = obj.author;
             article.types = obj.types;
             article.content = obj.content;
+            article.activeKey = obj.activeKey;
             article.description = obj.description
                 ? obj.description
                 : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);
