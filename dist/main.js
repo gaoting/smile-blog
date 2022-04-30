@@ -18,6 +18,6 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup("api", app, document);
     await app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     await app.useGlobalFilters(new filters_1.HttpExceptionFilter());
-    await app.listen(3006);
+    await app.listen(3300);
 }
 bootstrap();

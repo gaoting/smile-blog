@@ -38,9 +38,9 @@ let ArticleService = class ArticleService {
     async findAll(query) {
         const qb = await this.articleService.createQueryBuilder("article");
         qb.where("1=1");
-        qb.orderBy("article.updateTime", "DESC");
+        qb.orderBy("article.createTime", "DESC");
         const total = await qb.getCount();
-        const { current = 1, pageSize = 10 } = query, params = __rest(query, ["current", "pageSize"]);
+        const { current, pageSize } = query, params = __rest(query, ["current", "pageSize"]);
         qb.limit(pageSize);
         qb.andWhere(params);
         qb.offset(pageSize * (current - 1));

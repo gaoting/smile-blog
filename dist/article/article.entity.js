@@ -59,7 +59,7 @@ __decorate([
 ], Article.prototype, "activeKey", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, type: "simple-array" }),
-    __metadata("design:type", Object)
+    __metadata("design:type", Array)
 ], Article.prototype, "orderByDesc", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)({
