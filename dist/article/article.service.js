@@ -82,10 +82,10 @@ let ArticleService = class ArticleService {
                     qb.orderBy("article.loveNum", "DESC");
                     break;
                 default:
-                    qb.orderBy("article.updateTime", "DESC");
+                    qb.orderBy("article.createTime", "DESC");
             }
         }
-        qb.addOrderBy("article.updateTime", "DESC");
+        qb.addOrderBy("article.createTime", "DESC");
         qb.limit(10);
         const posts = await qb.getMany();
         console.log(posts, "==================33333");

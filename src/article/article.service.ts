@@ -22,10 +22,10 @@ export class ArticleService {
   async findAll(query?: any): Promise<any> {
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
-    qb.orderBy("article.updateTime", "DESC");
+    qb.orderBy("article.createTime", "DESC");
 
     const total = await qb.getCount();
-    const { current = 1, pageSize = 10, ...params } = query;
+    const { current, pageSize, ...params } = query;
     qb.limit(pageSize);
     qb.andWhere(params);
     qb.offset(pageSize * (current - 1));
@@ -79,10 +79,10 @@ export class ArticleService {
           qb.orderBy("article.loveNum", "DESC");
           break;
         default:
-          qb.orderBy("article.updateTime", "DESC");
+          qb.orderBy("article.createTime", "DESC");
       }
     }
-    qb.addOrderBy("article.updateTime", "DESC");
+    qb.addOrderBy("article.createTime", "DESC");
     qb.limit(10);
 
     const posts = await qb.getMany();

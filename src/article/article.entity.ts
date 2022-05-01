@@ -43,7 +43,7 @@ export class Article {
   activeKey: string;
 
   @Column({ nullable: true, type: "simple-array"})
-  orderByDesc: object;
+  orderByDesc: Array<string>;
 
   @CreateDateColumn({
     type: "timestamp",
