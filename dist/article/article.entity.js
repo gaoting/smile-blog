@@ -18,15 +18,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 20, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "author", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 20, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "tags", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 20, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "types", void 0);
 __decorate([
@@ -38,11 +38,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "loveNum", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 60, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "text", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "description", void 0);
 __decorate([
@@ -50,13 +50,29 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 255, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 100, default: "", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "picture", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "varchar", length: 2, default: "2", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "activeKey", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "int", default: null, nullable: true }),
+    __metadata("design:type", Number)
+], Article.prototype, "preId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "int", default: null, nullable: true }),
+    __metadata("design:type", Number)
+], Article.prototype, "nextId", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 60, default: "", nullable: true }),
+    __metadata("design:type", String)
+], Article.prototype, "preTitle", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", length: 60, default: "", nullable: true }),
+    __metadata("design:type", String)
+], Article.prototype, "nextTitle", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true, type: "simple-array" }),
     __metadata("design:type", Array)

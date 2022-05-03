@@ -1,3 +1,6 @@
+import { DiaryModule } from "./diary/diary.module";
+import { DiaryService } from "./diary/diary.service";
+import { DiaryController } from "./diary/diary.controller";
 import { ArticleModule } from "./article/article.module";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
@@ -8,8 +11,9 @@ import { Article } from "./article/article.entity";
 
 @Module({
   imports: [
+    DiaryModule,
     ArticleModule,
-    TypeOrmModule.forRoot( {
+    TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost",
       port: 3306,
@@ -22,7 +26,7 @@ import { Article } from "./article/article.entity";
       logging: "all",
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [DiaryController, AppController],
+  providers: [DiaryService, AppService],
 })
 export class AppModule {}

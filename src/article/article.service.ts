@@ -48,10 +48,28 @@ export class ArticleService {
       .where("article.id=:id")
       .setParameter("id", id);
 
+    console.log(qb.limit(1));
+
     const result = await qb.getOne();
     if (!result)
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     await this.articleService.update(id, { lookNum: result.lookNum + 1 });
+
+    // 下一条
+    let sql1 = `SELECT * FROM article WHERE id IN((SELECT id FROM article WHERE id<${id} ORDER BY id DESC LIMIT 1),(SELECT id FROM article WHERE id>${id} ORDER BY id LIMIT 1)) ORDER BY id`;
+    const nextData = await this.articleService.query(sql1);
+    console.log(nextData, "nnnnnnnnnnnnnnn");
+
+    if (nextData) {
+      if (nextData[0]) {
+        result.preId = nextData[0].id;
+        result.preTitle = nextData[0].title;
+      }
+      if (nextData[1]) {
+        result.nextId = nextData[1].id;
+        result.nextTitle = nextData[1].title;
+      }
+    }
 
     return result;
   }
@@ -59,10 +77,8 @@ export class ArticleService {
   // 收藏
   async setLove(obj: any): Promise<any> {
     const { id, loveNum } = obj;
-
-    await this.articleService.update(id, { loveNum: loveNum });
+    await this.articleService.update(id, { loveNum: Math.abs(loveNum) });
     let data = await this.articleService.findOne(id);
-
     return data;
   }
 

@@ -1,0 +1,7 @@
+
+
+@Controller()
+export class DiaryController {
+
+
+}
