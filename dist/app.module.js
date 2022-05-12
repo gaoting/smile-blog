@@ -8,14 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const diary_module_1 = require("./diary/diary.module");
-const diary_service_1 = require("./diary/diary.service");
-const diary_controller_1 = require("./diary/diary.controller");
 const article_module_1 = require("./article/article.module");
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const article_entity_1 = require("./article/article.entity");
+const diary_entity_1 = require("./diary/diary.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -30,14 +29,14 @@ AppModule = __decorate([
                 username: "root",
                 password: "12345678",
                 database: "smile_blog",
-                entities: [article_entity_1.Article],
+                entities: [article_entity_1.Article, diary_entity_1.Diary],
                 autoLoadEntities: true,
                 synchronize: true,
                 logging: "all",
             }),
         ],
-        controllers: [diary_controller_1.DiaryController, app_controller_1.AppController],
-        providers: [diary_service_1.DiaryService, app_service_1.AppService],
+        controllers: [app_controller_1.AppController],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -147,7 +147,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "remove", null);
 ArticleController = __decorate([
-    (0, swagger_1.ApiTags)("Article"),
+    (0, swagger_1.ApiTags)("文章"),
     (0, common_1.Controller)("api/article"),
     __metadata("design:paramtypes", [article_service_1.ArticleService])
 ], ArticleController);

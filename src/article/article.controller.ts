@@ -26,7 +26,7 @@ const fs = require("fs");
 const fsExtra = require("fs-extra");
 const fileRootPath = "./images";
 
-@ApiTags("Article")
+@ApiTags("文章")
 @Controller("api/article")
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
