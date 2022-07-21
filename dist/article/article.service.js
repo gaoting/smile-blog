@@ -45,9 +45,6 @@ let ArticleService = class ArticleService {
         qb.andWhere(params);
         qb.offset(pageSize * (current - 1));
         const posts = await qb.getMany();
-        posts.forEach((v) => {
-            console.log(v.content);
-        });
         let data = {
             list: posts,
             total: total,
@@ -120,6 +117,7 @@ let ArticleService = class ArticleService {
             article.types = obj.types;
             article.content = obj.content;
             article.activeKey = obj.activeKey;
+            article.picture = obj.picture;
             article.description = obj.description
                 ? obj.description
                 : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);

@@ -31,9 +31,6 @@ export class ArticleService {
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
-    posts.forEach((v) => {
-      console.log(v.content);
-    });
 
     let data = {
       list: posts,
@@ -122,6 +119,7 @@ export class ArticleService {
       article.types = obj.types;
       article.content = obj.content;
       article.activeKey = obj.activeKey;
+      article.picture = obj.picture;
       article.description = obj.description
         ? obj.description
         : obj.content?.substring(0, 300);

@@ -30,13 +30,13 @@ export class Article {
   @Column({ type: "varchar", length: 60, default: "", nullable: true })
   title: string;
 
-  @Column({ type: "text",  nullable: true })
+  @Column({ type: "text", nullable: true })
   description: string;
 
   @Column({ type: "text", nullable: true })
   content: string;
 
-  @Column({ type: "varchar", length: 100, default: "", nullable: true })
+  @Column({ type: "text", nullable: true })
   picture: string;
 
   @Column({ type: "varchar", length: 2, default: "2", nullable: true })

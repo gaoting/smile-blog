@@ -50,7 +50,7 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 100, default: "", nullable: true }),
+    (0, typeorm_1.Column)({ type: "text", nullable: true }),
     __metadata("design:type", String)
 ], Article.prototype, "picture", void 0);
 __decorate([
