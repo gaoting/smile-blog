@@ -75,7 +75,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "findById", null);
 __decorate([
-    (0, common_1.Get)("searchList"),
+    (0, common_1.Post)("searchList"),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

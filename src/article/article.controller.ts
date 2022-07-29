@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
 } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
@@ -21,6 +22,9 @@ import {
 // 3.将上传的图片放到某个文件夹
 import { createWriteStream } from "fs";
 import { join } from "path";
+import { AuthGuard } from '@nestjs/passport';
+
+
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
@@ -31,6 +35,7 @@ const fileRootPath = "./images";
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
+  // @UseGuards(AuthGuard('jwt'))
   @Get("list")
   findAll(@Query() query): Promise<any> {
     return this.articleService.findAll(query);
@@ -41,7 +46,7 @@ export class ArticleController {
     return this.articleService.findById(id);
   }
 
-  @Get("searchList")
+  @Post("searchList")
   searchList(@Query() query): Promise<any> {
     return this.articleService.searchNum(query);
   }
