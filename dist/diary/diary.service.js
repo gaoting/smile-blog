@@ -31,6 +31,7 @@ let DiaryService = class DiaryService {
         qb.offset(pageSize * (current - 1));
         const posts = await qb.getMany();
         let data = {
+            code: 200,
             list: posts,
             total: total,
             pageSize: pageSize,
@@ -48,14 +49,12 @@ let DiaryService = class DiaryService {
         }
         catch (error) {
             throw new common_1.HttpException(error, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-            return { message: error };
         }
     }
     async setLove(obj) {
         const { id, loveNum } = obj;
         await this.repository.update(id, { loveNum: Math.abs(loveNum) });
-        let data = await this.repository.findOne(id);
-        return data;
+        return this.repository.findOne(id);
     }
 };
 DiaryService = __decorate([

@@ -7,14 +7,14 @@ import {
 } from "typeorm";
 
 @Entity()
-export class Login {
+export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "varchar", length: 20 })
+  @Column({ type: "varchar", length: 20, nullable: true  })
   userName: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", length: 100, nullable: true  })
   pwd: string;
 
   @Column({ type: "text", default: null, nullable: true })

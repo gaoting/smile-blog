@@ -12,12 +12,9 @@ const operators_1 = require("rxjs/operators");
 const common_2 = require("@nestjs/common");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
-        return next.handle().pipe((0, operators_1.map)((data) => {
-            return {
-                data,
-                code: 200,
-                message: "请求成功",
-            };
+        return next.handle().pipe((0, operators_1.map)((result) => {
+            console.log(result, "ddddddddddddaaaaaaa");
+            return { result };
         }));
     }
 };
@@ -32,14 +29,14 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const status = exception.getStatus();
         const message = exception.message
             ? exception.message
-            : `${status >= 500 ? 'Service Error' : 'Client Error'}`;
+            : `${status >= 500 ? "Service Error" : "Client Error"}`;
         const errorResponse = {
-            data: {},
+            result: {},
             message: message,
             code: -1,
         };
         response.status(status);
-        response.header('Content-Type', 'application/json; charset=utf-8');
+        response.header("Content-Type", "application/json; charset=utf-8");
         response.send(errorResponse);
     }
 };

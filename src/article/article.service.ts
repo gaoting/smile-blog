@@ -35,8 +35,9 @@ export class ArticleService {
     let data = {
       list: posts,
       total: total,
-      pageSize: pageSize,
-      current: current,
+      pageSize: +pageSize,
+      current: +current,
+      code: 200,
     };
     return params.id ? posts[0] : data;
   }
@@ -71,7 +72,7 @@ export class ArticleService {
       }
     }
 
-    return result;
+    return { data:result, code: 200 };
   }
 
   // 收藏
@@ -79,12 +80,12 @@ export class ArticleService {
     const { id, loveNum } = obj;
     await this.articleService.update(id, { loveNum: Math.abs(loveNum) });
     let data = await this.articleService.findOne(id);
-    return data;
+    return { data, code: 200 };
   }
 
   // 根据条件查询列表  不带分页
   async searchNum(query?: any): Promise<any> {
-    let qb = await this.articleService.createQueryBuilder("article");
+    let qb = this.articleService.createQueryBuilder("article");
     qb.where("1=1");
     if (query && query.orderByDesc) {
       switch (query.orderByDesc[0]) {
@@ -106,6 +107,8 @@ export class ArticleService {
 
     return {
       list: posts,
+      code: 200,
+      total: posts.length,
     };
   }
 
@@ -125,10 +128,9 @@ export class ArticleService {
         : obj.content?.substring(0, 300);
 
       const newArticle = await this.articleService.save(article);
-      return { data: newArticle, message: "创建ok" };
+      return { data: newArticle, code: 200, message: "创建ok" };
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
-      return { message: error };
     }
   }
 
@@ -145,16 +147,16 @@ export class ArticleService {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     await this.articleService.update(id, params);
 
-    return result;
+    return { result, code: 200 };
   }
 
   // 删除
-  async delete(id): Promise<String> {
+  async delete(id): Promise<any> {
     let list = await this.articleService.delete(id);
     if (list) {
-      return "删除ok";
+      return { message: "删除ok", code: 200 };
     } else {
-      return "删除失败";
+      return { message: "删除失败", code: 500 };
     }
   }
 
@@ -165,7 +167,7 @@ export class ArticleService {
       // 在这里是对获取的api列表做了一些处理方便前台读取
       return `/api/upload${item.split("image")[1]}`;
     });
-    return imageFiles;
+    return { imageFiles, code: 200 };
   }
 
   removeImage(directoryPath: string) {

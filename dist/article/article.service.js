@@ -48,8 +48,9 @@ let ArticleService = class ArticleService {
         let data = {
             list: posts,
             total: total,
-            pageSize: pageSize,
-            current: current,
+            pageSize: +pageSize,
+            current: +current,
+            code: 200,
         };
         return params.id ? posts[0] : data;
     }
@@ -76,16 +77,16 @@ let ArticleService = class ArticleService {
                 result.nextTitle = nextData[1].title;
             }
         }
-        return result;
+        return { data: result, code: 200 };
     }
     async setLove(obj) {
         const { id, loveNum } = obj;
         await this.articleService.update(id, { loveNum: Math.abs(loveNum) });
         let data = await this.articleService.findOne(id);
-        return data;
+        return { data, code: 200 };
     }
     async searchNum(query) {
-        let qb = await this.articleService.createQueryBuilder("article");
+        let qb = this.articleService.createQueryBuilder("article");
         qb.where("1=1");
         if (query && query.orderByDesc) {
             switch (query.orderByDesc[0]) {
@@ -105,6 +106,8 @@ let ArticleService = class ArticleService {
         console.log(posts, "==================33333");
         return {
             list: posts,
+            code: 200,
+            total: posts.length,
         };
     }
     async create(obj) {
@@ -122,11 +125,10 @@ let ArticleService = class ArticleService {
                 ? obj.description
                 : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);
             const newArticle = await this.articleService.save(article);
-            return { data: newArticle, message: "创建ok" };
+            return { data: newArticle, code: 200, message: "创建ok" };
         }
         catch (error) {
             throw new common_1.HttpException(error, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-            return { message: error };
         }
     }
     async updated(obj) {
@@ -139,15 +141,15 @@ let ArticleService = class ArticleService {
         if (!result)
             throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
         await this.articleService.update(id, params);
-        return result;
+        return { result, code: 200 };
     }
     async delete(id) {
         let list = await this.articleService.delete(id);
         if (list) {
-            return "删除ok";
+            return { message: "删除ok", code: 200 };
         }
         else {
-            return "删除失败";
+            return { message: "删除失败", code: 500 };
         }
     }
     async findAllImg() {
@@ -155,7 +157,7 @@ let ArticleService = class ArticleService {
         const imageFiles = files.map((item) => {
             return `/api/upload${item.split("image")[1]}`;
         });
-        return imageFiles;
+        return { imageFiles, code: 200 };
     }
     removeImage(directoryPath) {
         fsExtra.removeSync(`${fileRootPath}/upload/${directoryPath}`);

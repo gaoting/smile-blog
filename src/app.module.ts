@@ -1,18 +1,18 @@
-import { LoginModule } from "./login/login.module";
+
+import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
 import { DiaryModule } from "./diary/diary.module";
 import { ArticleModule } from "./article/article.module";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-// import config from "./common/config"
-import { Article } from "./article/article.entity";
-import { Diary } from "./diary/diary.entity";
-import { Login } from "./login/login.entity";
+
 
 @Module({
   imports: [
-    LoginModule,
+    UserModule,
+    AuthModule,
     DiaryModule,
     ArticleModule,
     TypeOrmModule.forRoot({
@@ -22,7 +22,9 @@ import { Login } from "./login/login.entity";
       username: "root",
       password: "12345678",
       database: "smile_blog",
-      entities: [Article, Diary, Login],
+      // entities: [Article, Diary, Login],
+      entities: [__dirname, "./**/*.entity.{js,ts"],
+
       autoLoadEntities: true,
       synchronize: true,
       logging: "all",

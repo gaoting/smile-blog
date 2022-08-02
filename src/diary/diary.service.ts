@@ -30,12 +30,13 @@ export class DiaryService {
 
     const posts = await qb.getMany();
     let data = {
+      code: 200,
       list: posts,
       total: total,
       pageSize: pageSize,
       current: current,
     };
-    console.log(data,"ddddddddddddd1111111");
+    console.log(data, "ddddddddddddd1111111");
     return data;
   }
 
@@ -47,7 +48,6 @@ export class DiaryService {
       return { data: newArticle, message: "创建ok" };
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
-      return { message: error };
     }
   }
 
@@ -55,7 +55,6 @@ export class DiaryService {
   async setLove(obj: any): Promise<any> {
     const { id, loveNum } = obj;
     await this.repository.update(id, { loveNum: Math.abs(loveNum) });
-    let data = await this.repository.findOne(id);
-    return data;
+    return this.repository.findOne(id);
   }
 }
