@@ -1,3 +1,5 @@
+import { APP_FILTER } from "@nestjs/core";
+import { HttpExceptionFilter } from "./filters/http-exception.filter";
 
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
@@ -8,13 +10,13 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-
 @Module({
   imports: [
     UserModule,
     AuthModule,
     DiaryModule,
     ArticleModule,
+    // LoggerModule,
     TypeOrmModule.forRoot({
       type: "mysql",
       host: "localhost",
@@ -31,6 +33,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     }),
   ],
   controllers: [AppController],
-  providers: [ AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useValue: new HttpExceptionFilter(),
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

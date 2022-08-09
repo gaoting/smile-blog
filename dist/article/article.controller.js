@@ -35,7 +35,7 @@ let ArticleController = class ArticleController {
         return this.articleService.searchNum(query);
     }
     create(body) {
-        this.articleService.create(body);
+        this.articleService.add(body);
     }
     updateOne(body) {
         return this.articleService.updated(body);
@@ -76,6 +76,7 @@ __decorate([
 ], ArticleController.prototype, "findById", null);
 __decorate([
     (0, common_1.Post)("searchList"),
+    (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -83,6 +84,7 @@ __decorate([
 ], ArticleController.prototype, "searchList", null);
 __decorate([
     (0, common_1.Post)("add"),
+    (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

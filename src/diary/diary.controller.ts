@@ -7,6 +7,7 @@ import {
   Query,
   Body,
   Param,
+  Header
 } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { DiaryService } from "./diary.service";
@@ -22,6 +23,7 @@ export class DiaryController {
   }
 
   @Post("add")
+  @Header("content-type", "application/json")
   create(@Body() body) {
     this.diaryService.create(body);
   }

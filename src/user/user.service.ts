@@ -34,7 +34,7 @@ export class UserService {
           .execute();
 
         return {
-          data: user,
+          list: user,
           code: 200,
           message: "注册ok",
         };

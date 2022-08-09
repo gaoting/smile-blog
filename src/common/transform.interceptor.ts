@@ -23,16 +23,9 @@ interface Response<T> {
 export class TransformInterceptor<T>
   implements NestInterceptor<T, Response<T>>
 {
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler<T>
-  ): Observable<Response<T>> {
-    return next.handle().pipe(
-      map((result) => {
-        console.log(result, "ddddddddddddaaaaaaa");
-        return {  result };
-      })
-    );
+  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<any> {
+    console.log(context);
+    return next.handle().pipe(map((result) => result));
   }
 }
 
@@ -44,9 +37,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus(); // 获取异常状态码
 
     // 设置错误信息
-    const message = exception.message
-      ? exception.message
-      : `${status >= 500 ? "Service Error" : "Client Error"}`;
+    let msg = status >= 500 ? "Service Error" : "Client Error";
+    const message = exception.message ? exception.message : `${msg}`;
     const errorResponse = {
       result: {},
       message: message,

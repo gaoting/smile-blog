@@ -9,9 +9,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionFilter = void 0;
 const common_1 = require("@nestjs/common");
 let HttpExceptionFilter = class HttpExceptionFilter {
-    catch(exception, host) { }
+    catch(exception, host) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse();
+        const request = ctx.getRequest();
+        const status = exception.getStatus();
+        response
+            .status(status)
+            .json({
+            statusCode: status,
+            timestamp: new Date().toISOString(),
+            path: request.url,
+        });
+    }
 };
 HttpExceptionFilter = __decorate([
-    (0, common_1.Catch)()
+    (0, common_1.Catch)(common_1.HttpException)
 ], HttpExceptionFilter);
 exports.HttpExceptionFilter = HttpExceptionFilter;

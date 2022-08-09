@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UploadedFiles,
   UseGuards,
+  Header,
 } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
@@ -22,8 +23,7 @@ import {
 // 3.将上传的图片放到某个文件夹
 import { createWriteStream } from "fs";
 import { join } from "path";
-import { AuthGuard } from '@nestjs/passport';
-
+import { AuthGuard } from "@nestjs/passport";
 
 const multer = require("multer");
 const fs = require("fs");
@@ -47,13 +47,15 @@ export class ArticleController {
   }
 
   @Post("searchList")
+  @Header("content-type", "application/json")
   searchList(@Query() query): Promise<any> {
     return this.articleService.searchNum(query);
   }
 
   @Post("add")
+  @Header("content-type", "application/json")
   create(@Body() body) {
-    this.articleService.create(body);
+    this.articleService.add(body);
   }
 
   // 更新文章
@@ -80,6 +82,7 @@ export class ArticleController {
   }
 
   @Post("upload")
+
   // 当我们要上传单个文件时, 我们只需将 FileInterceptor() 与处理程序绑定在一起
   // 然后使用 @UploadedFile() 装饰器从 request 中取出 file。
   @UseInterceptors(

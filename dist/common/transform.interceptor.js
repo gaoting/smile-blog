@@ -12,10 +12,8 @@ const operators_1 = require("rxjs/operators");
 const common_2 = require("@nestjs/common");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
-        return next.handle().pipe((0, operators_1.map)((result) => {
-            console.log(result, "ddddddddddddaaaaaaa");
-            return { result };
-        }));
+        console.log(context);
+        return next.handle().pipe((0, operators_1.map)((result) => result));
     }
 };
 TransformInterceptor = __decorate([
@@ -27,9 +25,8 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const status = exception.getStatus();
-        const message = exception.message
-            ? exception.message
-            : `${status >= 500 ? "Service Error" : "Client Error"}`;
+        let msg = status >= 500 ? "Service Error" : "Client Error";
+        const message = exception.message ? exception.message : `${msg}`;
         const errorResponse = {
             result: {},
             message: message,

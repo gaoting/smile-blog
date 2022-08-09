@@ -40,6 +40,7 @@ __decorate([
 ], DiaryController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)("add"),
+    (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

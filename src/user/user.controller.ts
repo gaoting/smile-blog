@@ -1,6 +1,6 @@
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "./user.service";
-import { Body, Controller, Post, Headers } from "@nestjs/common";
+import { Body, Controller, Post, Header } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 
 @ApiTags("用户")
@@ -12,12 +12,14 @@ export class UserController {
   ) {}
 
   @Post("/register")
+  @Header("content-type", "application/json")
   public register(@Body() body) {
     console.log(body, "bbbbbbb-----");
     return this.userService.registerUser(body);
   }
 
   @Post("/login")
+  @Header("content-type", "application/json")
   public async login(@Body() body: any) {
     const { userName, pwd } = body;
 
@@ -32,9 +34,9 @@ export class UserController {
       };
     }
 
-    return {
-      code: 201,
-      message: "用户名或密码错误",
-    };
+    // return {
+    //   code: 201,
+    //   message: "用户名或密码错误",
+    // };
   }
 }

@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, getRepository, DeleteResult } from "typeorm";
+import { Repository, DeleteResult } from "typeorm";
 import { Article } from "./article.entity";
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 // import { http } from "src/common/http";
@@ -72,15 +72,15 @@ export class ArticleService {
       }
     }
 
-    return { data:result, code: 200 };
+    return { data: result, code: 200 };
   }
 
   // 收藏
   async setLove(obj: any): Promise<any> {
     const { id, loveNum } = obj;
     await this.articleService.update(id, { loveNum: Math.abs(loveNum) });
-    let data = await this.articleService.findOne(id);
-    return { data, code: 200 };
+    let data = await this.articleService.findOne({ where: { id } });
+    return { data: data, code: 200 };
   }
 
   // 根据条件查询列表  不带分页
@@ -103,7 +103,6 @@ export class ArticleService {
     qb.limit(10);
 
     const posts = await qb.getMany();
-    console.log(posts, "==================33333");
 
     return {
       list: posts,
@@ -113,25 +112,38 @@ export class ArticleService {
   }
 
   // 创建
-  async create(obj: CreateDto): Promise<any> {
-    let article = new Article();
+  async add(obj: CreateDto): Promise<any> {
     try {
-      article.title = obj.title;
-      article.tags = obj.tags;
-      article.author = obj.author;
-      article.types = obj.types;
-      article.content = obj.content;
-      article.activeKey = obj.activeKey;
-      article.picture = obj.picture;
-      article.description = obj.description
-        ? obj.description
-        : obj.content?.substring(0, 300);
+      let article = new Article();
 
-      const newArticle = await this.articleService.save(article);
-      return { data: newArticle, code: 200, message: "创建ok" };
-    } catch (error) {
-      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      await this.articleService
+        .createQueryBuilder()
+        .insert()
+        .into(Article)
+        .values([obj]);
+
+      // const data = await this.articleService.save(article);
+      return { code: 200, message: "创建ok" };
+    } catch (err) {
+      throw new Error(err);
+      return { message: err, code: 500 };
     }
+
+    // let article = new Article();
+
+    //   article.title = obj.title;
+    //   article.tags = obj.tags;
+    //   article.author = obj.author;
+    //   article.types = obj.types;
+    //   article.content = obj.content;
+    //   article.activeKey = obj.activeKey;
+    //   article.picture = obj.picture;
+    //   article.description = obj.description
+    //     ? obj.description
+    //     : obj.content?.substring(0, 300);
+
+    //    await this.articleService.save(article);
+    //   return {  code: 200, message: "创建ok" };
   }
 
   // 更新
@@ -147,16 +159,16 @@ export class ArticleService {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     await this.articleService.update(id, params);
 
-    return { result, code: 200 };
+    return { list: result, code: 200, message: "修改ok" };
   }
 
   // 删除
   async delete(id): Promise<any> {
     let list = await this.articleService.delete(id);
     if (list) {
-      return { message: "删除ok", code: 200 };
+      return { message: "删除ok", data: {}, code: 200 };
     } else {
-      return { message: "删除失败", code: 500 };
+      return { message: "删除失败", data: {}, code: 500 };
     }
   }
 
