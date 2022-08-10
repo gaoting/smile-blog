@@ -7,20 +7,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionFilter = void 0;
+const dayjs = require("dayjs");
 const common_1 = require("@nestjs/common");
 let HttpExceptionFilter = class HttpExceptionFilter {
     catch(exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const request = ctx.getRequest();
-        const status = exception.getStatus();
-        response
-            .status(status)
-            .json({
+        const status = exception instanceof common_1.HttpException
+            ? exception.getStatus()
+            : common_1.HttpStatus.INTERNAL_SERVER_ERROR;
+        const nowDate = dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ss');
+        const errorResponse = {
             statusCode: status,
-            timestamp: new Date().toISOString(),
+            message: exception.message,
+            error: exception.name,
+            date: nowDate,
             path: request.url,
-        });
+        };
+        response.status(status).json(errorResponse);
     }
 };
 HttpExceptionFilter = __decorate([

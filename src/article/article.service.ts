@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, DeleteResult } from "typeorm";
+import { Repository } from "typeorm";
 import { Article } from "./article.entity";
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 // import { http } from "src/common/http";
@@ -9,6 +9,8 @@ const fsExtra = require("fs-extra");
 const fileRootPath = "./images";
 const glob = require("glob");
 // import { getNowTime } from "../filters/time";
+import * as dayjs from "dayjs";
+
 import { CreateDto } from "./create.dto";
 
 @Injectable()
@@ -35,8 +37,8 @@ export class ArticleService {
     let data = {
       list: posts,
       total: total,
-      pageSize: +pageSize,
-      current: +current,
+      pageSize: pageSize,
+      current: current,
       code: 200,
     };
     return params.id ? posts[0] : data;
@@ -113,37 +115,28 @@ export class ArticleService {
 
   // 创建
   async add(obj: CreateDto): Promise<any> {
-    try {
-      let article = new Article();
-
-      await this.articleService
-        .createQueryBuilder()
-        .insert()
-        .into(Article)
-        .values([obj]);
-
-      // const data = await this.articleService.save(article);
-      return { code: 200, message: "创建ok" };
-    } catch (err) {
-      throw new Error(err);
-      return { message: err, code: 500 };
+    const { title } = obj;
+    const findResult = await this.articleService.findOne({ where: { title } });
+    if (findResult) {
+      throw new HttpException("文章标题已存在", HttpStatus.BAD_REQUEST);
     }
+    let article = new Article();
 
-    // let article = new Article();
-
-    //   article.title = obj.title;
-    //   article.tags = obj.tags;
-    //   article.author = obj.author;
-    //   article.types = obj.types;
-    //   article.content = obj.content;
-    //   article.activeKey = obj.activeKey;
-    //   article.picture = obj.picture;
-    //   article.description = obj.description
-    //     ? obj.description
-    //     : obj.content?.substring(0, 300);
-
-    //    await this.articleService.save(article);
-    //   return {  code: 200, message: "创建ok" };
+    article.title = obj.title;
+    article.tags = obj.tags;
+    article.author = obj.author;
+    article.types = obj.types;
+    article.content = obj.content;
+    article.activeKey = obj.activeKey;
+    article.picture = obj.picture;
+    article.description = obj.description
+      ? obj.description
+      : obj.content?.substring(0, 300);
+    await this.articleService.save(article);
+    return {
+      message: "创建ok",
+      code: 200,
+    };
   }
 
   // 更新

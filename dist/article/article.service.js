@@ -48,8 +48,8 @@ let ArticleService = class ArticleService {
         let data = {
             list: posts,
             total: total,
-            pageSize: +pageSize,
-            current: +current,
+            pageSize: pageSize,
+            current: current,
             code: 200,
         };
         return params.id ? posts[0] : data;
@@ -110,19 +110,28 @@ let ArticleService = class ArticleService {
         };
     }
     async add(obj) {
-        try {
-            let article = new article_entity_1.Article();
-            await this.articleService
-                .createQueryBuilder()
-                .insert()
-                .into(article_entity_1.Article)
-                .values([obj]);
-            return { code: 200, message: "创建ok" };
+        var _a;
+        const { title } = obj;
+        const findResult = await this.articleService.findOne({ where: { title } });
+        if (findResult) {
+            throw new common_1.HttpException("文章标题已存在", common_1.HttpStatus.BAD_REQUEST);
         }
-        catch (err) {
-            throw new Error(err);
-            return { message: err, code: 500 };
-        }
+        let article = new article_entity_1.Article();
+        article.title = obj.title;
+        article.tags = obj.tags;
+        article.author = obj.author;
+        article.types = obj.types;
+        article.content = obj.content;
+        article.activeKey = obj.activeKey;
+        article.picture = obj.picture;
+        article.description = obj.description
+            ? obj.description
+            : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);
+        await this.articleService.save(article);
+        return {
+            message: "创建ok",
+            code: 200,
+        };
     }
     async updated(obj) {
         const { id } = obj, params = __rest(obj, ["id"]);

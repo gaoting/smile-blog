@@ -35,7 +35,6 @@ const fileRootPath = "./images";
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  // @UseGuards(AuthGuard('jwt'))
   @Get("list")
   findAll(@Query() query): Promise<any> {
     return this.articleService.findAll(query);
@@ -43,19 +42,21 @@ export class ArticleController {
 
   @Get("content")
   findById(@Query("id") id): Promise<any> {
-    return this.articleService.findById(id);
+    return this.articleService.findById(id)
   }
 
   @Post("searchList")
   @Header("content-type", "application/json")
   searchList(@Query() query): Promise<any> {
+    console.log(query)
     return this.articleService.searchNum(query);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
   @Post("add")
   @Header("content-type", "application/json")
   create(@Body() body) {
-    this.articleService.add(body);
+    return this.articleService.add(body);
   }
 
   // 更新文章

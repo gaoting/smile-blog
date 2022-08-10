@@ -32,10 +32,11 @@ let ArticleController = class ArticleController {
         return this.articleService.findById(id);
     }
     searchList(query) {
+        console.log(query);
         return this.articleService.searchNum(query);
     }
     create(body) {
-        this.articleService.add(body);
+        return this.articleService.add(body);
     }
     updateOne(body) {
         return this.articleService.updated(body);
