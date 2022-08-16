@@ -23,7 +23,7 @@ export class DiaryController {
   }
 
   @Post("add")
-  @Header("content-type", "application/json")
+  //  @Header("content-type", "application/json")
   create(@Body() body) {
     this.diaryService.create(body);
   }

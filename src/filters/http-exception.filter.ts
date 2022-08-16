@@ -38,7 +38,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
     
     // 此刻的时间
-    const nowDate = dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ss');
+    const nowDate = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
     
     // 包装异常信息
     const errorResponse = {

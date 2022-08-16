@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const article_service_1 = require("./article.service");
 const platform_express_1 = require("@nestjs/platform-express");
+const passport_1 = require("@nestjs/passport");
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
@@ -32,7 +33,7 @@ let ArticleController = class ArticleController {
         return this.articleService.findById(id);
     }
     searchList(query) {
-        console.log(query);
+        console.log(query, 'QQQQQQQQQQQQQQQQQ');
         return this.articleService.searchNum(query);
     }
     create(body) {
@@ -84,6 +85,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "searchList", null);
 __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Post)("add"),
     (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Body)()),

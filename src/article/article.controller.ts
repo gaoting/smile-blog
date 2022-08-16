@@ -36,23 +36,24 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Get("list")
+ 
   findAll(@Query() query): Promise<any> {
     return this.articleService.findAll(query);
   }
 
   @Get("content")
   findById(@Query("id") id): Promise<any> {
-    return this.articleService.findById(id)
+    return this.articleService.findById(id);
   }
 
   @Post("searchList")
   @Header("content-type", "application/json")
   searchList(@Query() query): Promise<any> {
-    console.log(query)
+    console.log(query, 'QQQQQQQQQQQQQQQQQ');
     return this.articleService.searchNum(query);
   }
 
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Post("add")
   @Header("content-type", "application/json")
   create(@Body() body) {

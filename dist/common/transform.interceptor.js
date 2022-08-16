@@ -34,6 +34,7 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         };
         response.status(status);
         response.header("Content-Type", "application/json; charset=utf-8");
+        response.Header("Access-Control-Allow-Origin", "*");
         response.send(errorResponse);
     }
 };

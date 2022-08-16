@@ -54,9 +54,6 @@ export class Article {
   @Column({ type: "varchar", length: 60, default: "", nullable: true })
   nextTitle: string;
 
-  @Column({ nullable: true, type: "simple-array" })
-  orderByDesc: Array<string>;
-
   @CreateDateColumn({
     type: "timestamp",
     nullable: true,

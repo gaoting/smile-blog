@@ -74,10 +74,6 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "nextTitle", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true, type: "simple-array" }),
-    __metadata("design:type", Array)
-], Article.prototype, "orderByDesc", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)({
         type: "timestamp",
         nullable: true,

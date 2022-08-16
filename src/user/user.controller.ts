@@ -1,7 +1,8 @@
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "./user.service";
-import { Body, Controller, Post, Header } from "@nestjs/common";
+import { Body, Controller, Post, Header, UseGuards } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
 
 @ApiTags("用户")
 @Controller("api/user")
@@ -14,12 +15,12 @@ export class UserController {
   @Post("/register")
   @Header("content-type", "application/json")
   public register(@Body() body) {
-    console.log(body, "bbbbbbb-----");
     return this.userService.registerUser(body);
   }
 
   @Post("/login")
   @Header("content-type", "application/json")
+  @UseGuards(AuthGuard("local"))
   public async login(@Body() body: any) {
     const { userName, pwd } = body;
 

@@ -9,7 +9,8 @@ import * as crypto from 'crypto-js';
 @Injectable()
 export class AuthService {
     public constructor(
-        @InjectRepository(User) private user: Repository<User>,
+        @InjectRepository(User)
+        private readonly user: Repository<User>,
         private readonly jwtService: JwtService,
     ) {}
 

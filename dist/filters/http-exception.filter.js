@@ -17,7 +17,7 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const status = exception instanceof common_1.HttpException
             ? exception.getStatus()
             : common_1.HttpStatus.INTERNAL_SERVER_ERROR;
-        const nowDate = dayjs(Date.now()).format('YYYY-MM-DDTHH:mm:ss');
+        const nowDate = dayjs(Date.now()).format('YYYY-MM-DD HH:mm:ss');
         const errorResponse = {
             statusCode: status,
             message: exception.message,

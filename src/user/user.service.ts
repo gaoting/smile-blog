@@ -1,14 +1,16 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository, getRepository, DeleteResult } from "typeorm";
+import { Repository, DeleteResult } from "typeorm";
 import { User } from "./user.entity";
 import { Injectable, HttpStatus, HttpException } from "@nestjs/common";
 var bcrypt = require("bcrypt");
+
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly user: Repository<User>
+    
   ) {}
 
   async registerUser(info: { userName: string; pwd: string }): Promise<any> {
