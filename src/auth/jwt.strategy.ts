@@ -1,22 +1,35 @@
+import { AuthService } from "./auth.service";
+import { UnauthorizedException } from "@nestjs/common";
+import { PassportStrategy } from "@nestjs/passport";
+import { InjectRepository } from "@nestjs/typeorm";
+import { StrategyOptions, Strategy, ExtractJwt } from "passport-jwt";
+import { Repository } from "typeorm";
+import { User } from "./../user/user.entity";
+import { jwtConstants } from "./constants";
 
-import { Strategy, ExtractJwt, StrategyOptions } from 'passport-jwt';
-import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { jwtConstants } from './constants';
-
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+export class JwtStorage extends PassportStrategy(Strategy) {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly authService: AuthService
+  ) {
     super({
-      jwtFromRequest: ExtractJwt.fromHeader('token'), //使用ExtractJwt.fromHeader从header获取token
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret, //使用密钥解析，可以使用process.env.xxx
-    } as StrategyOptions);
+      secretOrKey: jwtConstants.secret,
+    });
   }
 
-  //token验证, payload是super中已经解析好的token信息
+  // JWT验证 - Step 4: 被守卫调用
   async validate(payload: any) {
-    console.log(payload);
-    return { username: payload.username };
+    console.log(`JWT验证 - Step 4: 被守卫调用`);
+    const info = payload.info;
+
+    // const userInfo = crypto.AES.decrypt(info, 'salt').toString(crypto.enc.Utf8);
+
+    // console.log(JSON.parse(userInfo));
+    return {
+      info,
+    };
   }
 }

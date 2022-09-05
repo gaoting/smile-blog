@@ -7,8 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const core_1 = require("@nestjs/core");
 const http_exception_filter_1 = require("./filters/http-exception.filter");
+const core_1 = require("@nestjs/core");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const diary_module_1 = require("./diary/diary.module");
@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
+const test_module_1 = require("./test/test.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -26,24 +27,28 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             diary_module_1.DiaryModule,
             article_module_1.ArticleModule,
-            typeorm_1.TypeOrmModule.forRoot({
-                type: "mysql",
-                host: "localhost",
-                port: 3306,
-                username: "root",
-                password: "12345678",
-                database: "smile_blog",
-                entities: [__dirname, "./**/*.entity.{js,ts"],
-                autoLoadEntities: true,
-                synchronize: true,
-                logging: "all",
+            typeorm_1.TypeOrmModule.forRootAsync({
+                useFactory: async () => ({
+                    type: "mysql",
+                    host: "localhost",
+                    port: 3306,
+                    username: "root",
+                    password: "12345678",
+                    database: "smile_blog",
+                    entities: [__dirname, "./**/*.entity.{js,ts"],
+                    autoLoadEntities: true,
+                    synchronize: true,
+                    logging: "all",
+                    timezone: "+08:00",
+                }),
             }),
+            test_module_1.TestModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [
             {
                 provide: core_1.APP_FILTER,
-                useValue: new http_exception_filter_1.HttpExceptionFilter(),
+                useClass: http_exception_filter_1.HttpExceptionFilter,
             },
             app_service_1.AppService,
         ],

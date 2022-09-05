@@ -1,3 +1,4 @@
+import { UserModule } from "./../user/user.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { PassportModule } from "@nestjs/passport";
@@ -8,21 +9,29 @@ import { jwtConstants } from "./constants";
 import { Global, Module } from "@nestjs/common";
 
 import { AuthController } from "./auth.controller";
-import { LocalStrategy } from "./local.strategy";
-import { JwtStrategy } from "./jwt.strategy";
+import { LocalStorage } from "./local.strategy";
+import { JwtStorage } from "./jwt.strategy";
 
+const jwtModule = JwtModule.registerAsync({
+  useFactory: async () => {
+    return {
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: "24h" },
+    };
+  },
+});
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+
     PassportModule,
-    // .register({ defaultStrategy: "jwt" })
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: "30m" }, // token 过期时效
+      signOptions: { expiresIn: "24h" },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtModule], // 因为auth模块需要导入到User模块，所以需要配置导出
+  providers: [AuthService, LocalStorage, JwtStorage],
+  exports: [jwtModule], // 因为auth模块需要导入到User模块，所以需要配置导出
 })
 export class AuthModule {}

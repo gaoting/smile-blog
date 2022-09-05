@@ -1,25 +1,47 @@
-import { Strategy, IStrategyOptions } from "passport-local";
-import { PassportStrategy } from "@nestjs/passport";
-import { Injectable } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-// import { compareSync } from 'bcryptjs';
+/*
+ * @Author: gaoting_fanhan 837082729@qq.com
+ * @Date: 2022-08-12 13:52:38
+ * @LastEditors: gaoting_fanhan 837082729@qq.com
+ * @LastEditTime: 2022-08-19 10:54:52
+ * @FilePath: /smile-blog-vue3/Users/smile/Coding/smile-blog/src/auth/local.strategy.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+import { compareSync } from 'bcrypt';
+import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { InjectRepository } from '@nestjs/typeorm';
+import { IStrategyOptions, Strategy } from 'passport-local';
+import { Repository } from 'typeorm';
+import { User } from './../user/user.entity';
 
-//本地策略
-//PassportStrategy接受两个参数：
-//第一个：Strategy，你要用的策略，这里是passport-local，本地策略
-//第二个：别名，可选，默认是passport-local的local，用于接口时传递的字符串
-@Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
+export class LocalStorage extends PassportStrategy(Strategy) {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {
+    // 如果不是username、password， 在constructor中配置
     super({
-      usernameField: "userName",
-      passwordField: "pwd",
+      usernameField: 'userName',
+      passwordField: 'pwd',
     } as IStrategyOptions);
   }
 
-  //validate是LocalStrategy的内置方法
   async validate(userName: string, pwd: string): Promise<any> {
-    //查询数据库，验证账号密码，并最终返回用户
-    return await this.authService.validateUser(userName, pwd);
+    // 因为密码是加密后的，没办法直接对比用户名密码，只能先根据用户名查出用户，再比对密码
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.pwd')
+      .where('user.userName=:userName', { userName })
+      .getOne();
+
+    if (!user) {
+      throw new BadRequestException('用户名不正确！');
+    }
+
+    if (!compareSync(pwd, user.pwd)) {
+      throw new BadRequestException('密码错误！');
+    }
+
+    return user;
   }
 }

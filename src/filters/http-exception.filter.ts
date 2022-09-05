@@ -12,6 +12,7 @@ import {
 import { Request, Response } from 'express';
 // 第三方logger
 // import { Logger } from 'nestjs-pino';
+// import { Log4jsService } from 'src/lib/log4js/log4js.service';
 
 // 捕获请求异常类型
 // 可以传递多个参数，所以你可以通过逗号分隔来为多个类型的异常设置过滤器。
@@ -19,7 +20,7 @@ import { Request, Response } from 'express';
 export class HttpExceptionFilter implements ExceptionFilter {
   // 我们要把异常塞到自定义logger,必须引入对应的实例
   // 在构建函数声明定义下,从外部传入
-  // constructor(private readonly logger: Logger) {}
+  // constructor(private readonly log4jsService: Log4jsService) {}
   
   catch(exception: HttpException, host: ArgumentsHost) {
     // 把请求相关的参数转成标准http的上下文
@@ -59,6 +60,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     //   JSON.stringify(errorResponse),
     //   'HttpExceptionFilter',
     // );
+    // this.log4jsService.logError(errorResponse)
     
     // 塞回去响应体,也就是客户端请求可以感知到的
     response.status(status).json(errorResponse);

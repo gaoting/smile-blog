@@ -1,3 +1,14 @@
+/*
+ * @Author: gaoting_fanhan 837082729@qq.com
+ * @Date: 2022-04-13 10:58:46
+ * @LastEditors: gaoting_fanhan 837082729@qq.com
+ * @LastEditTime: 2022-08-16 15:35:27
+ * @FilePath: /smile-blog-vue3/Users/smile/Coding/smile-blog/src/article/article.service.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by gaoting_fanhan 837082729@qq.com, All Rights Reserved. 
+ */
+
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Article } from "./article.entity";
@@ -60,7 +71,6 @@ export class ArticleService {
     // 下一条
     let sql1 = `SELECT * FROM article WHERE id IN((SELECT id FROM article WHERE id<${id} ORDER BY id DESC LIMIT 1),(SELECT id FROM article WHERE id>${id} ORDER BY id LIMIT 1)) ORDER BY id`;
     const nextData = await this.articleService.query(sql1);
-    console.log(nextData, "nnnnnnnnnnnnnnn");
 
     if (nextData) {
       if (nextData[0]) {

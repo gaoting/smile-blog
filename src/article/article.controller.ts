@@ -1,3 +1,14 @@
+/*
+ * @Author: gaoting_fanhan 837082729@qq.com
+ * @Date: 2022-04-13 10:58:36
+ * @LastEditors: gaoting_fanhan 837082729@qq.com
+ * @LastEditTime: 2022-08-18 17:01:32
+ * @FilePath: /smile-blog-vue3/Users/smile/Coding/smile-blog/src/article/article.controller.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by gaoting_fanhan 837082729@qq.com, All Rights Reserved. 
+ */
+
 import {
   Controller,
   Get,
@@ -13,7 +24,7 @@ import {
   UseGuards,
   Header,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
 import {
   FileFieldsInterceptor,
@@ -24,6 +35,8 @@ import {
 import { createWriteStream } from "fs";
 import { join } from "path";
 import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard, Roles } from './../auth/role.guard';
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 const multer = require("multer");
 const fs = require("fs");
@@ -49,13 +62,14 @@ export class ArticleController {
   @Post("searchList")
   @Header("content-type", "application/json")
   searchList(@Query() query): Promise<any> {
-    console.log(query, 'QQQQQQQQQQQQQQQQQ');
     return this.articleService.searchNum(query);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Post("add")
+  @ApiBearerAuth('JWT')
   @Header("content-type", "application/json")
+  // @Roles('admin','root')
   create(@Body() body) {
     return this.articleService.add(body);
   }
@@ -69,7 +83,6 @@ export class ArticleController {
   // 更新收藏量
   @Put("updateNum")
   updateNum(@Body() body): Promise<String> {
-    console.log(body, "qqqqqqqqqqqqqqq");
     return this.articleService.setLove(body);
   }
 

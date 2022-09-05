@@ -1,8 +1,9 @@
+// import { LOG4JS_PROVIDER } from "./lib/log4js/log4js.constants";
 import { AppModule } from "./app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { TransformInterceptor } from "./common/transform.interceptor";
+import { TransformInterceptor } from "./interceptor/transform.interceptor";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import { HttpExceptionFilter } from "./filters/http-exception.filter";
+import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
 import { NestFactory } from "@nestjs/core";
 // import { Logger } from "nestjs-pino";
 
@@ -30,7 +31,7 @@ async function bootstrap() {
   // app.useLogger(app.get(Logger));
 
   app.useGlobalInterceptors(new TransformInterceptor());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   await app.listen(3300);
 }

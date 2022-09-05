@@ -66,7 +66,6 @@ let ArticleService = class ArticleService {
         await this.articleService.update(id, { lookNum: result.lookNum + 1 });
         let sql1 = `SELECT * FROM article WHERE id IN((SELECT id FROM article WHERE id<${id} ORDER BY id DESC LIMIT 1),(SELECT id FROM article WHERE id>${id} ORDER BY id LIMIT 1)) ORDER BY id`;
         const nextData = await this.articleService.query(sql1);
-        console.log(nextData, "nnnnnnnnnnnnnnn");
         if (nextData) {
             if (nextData[0]) {
                 result.preId = nextData[0].id;
