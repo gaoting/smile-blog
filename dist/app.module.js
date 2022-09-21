@@ -7,9 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const messageboard_module_1 = require("./messageBoard/messageboard.module");
 const http_exception_filter_1 = require("./filters/http-exception.filter");
 const core_1 = require("@nestjs/core");
-const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const diary_module_1 = require("./diary/diary.module");
 const article_module_1 = require("./article/article.module");
@@ -23,7 +23,7 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            user_module_1.UserModule,
+            messageboard_module_1.MessageBoardModule,
             auth_module_1.AuthModule,
             diary_module_1.DiaryModule,
             article_module_1.ArticleModule,

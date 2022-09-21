@@ -16,6 +16,7 @@ exports.DiaryController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const diary_service_1 = require("./diary.service");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let DiaryController = class DiaryController {
     constructor(diaryService) {
         this.diaryService = diaryService;
@@ -38,7 +39,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DiaryController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("add"),
+    (0, swagger_1.ApiBearerAuth)("JWT"),
+    (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

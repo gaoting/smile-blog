@@ -8,9 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransformInterceptor = void 0;
 const common_1 = require("@nestjs/common");
+const rxjs_1 = require("rxjs");
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
-        return next.handle();
+        return next.handle().pipe((0, rxjs_1.map)((data) => {
+            return data ? data : { code: 200, message: "请求成功" };
+        }));
     }
 };
 TransformInterceptor = __decorate([

@@ -32,6 +32,13 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Diary.prototype, "createTime", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)({
+        type: "timestamp",
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], Diary.prototype, "updateTime", void 0);
 Diary = __decorate([
     (0, typeorm_1.Entity)()
 ], Diary);

@@ -8,12 +8,18 @@ import {
 } from "typeorm";
 
 @Entity()
-export class Diary {
-  @PrimaryGeneratedColumn()
-  id:number
+export class MessageBoard {
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+
+  @Column({ type: "varchar", length: 20, nullable: true })
+  userName: string;
 
   @Column({ type: "text", nullable: true })
   content: string;
+  
+  @Column({ type: "text", default: null, nullable: true })
+  avatar: string;
 
   @Column({ type: "int", default: 0, nullable: true })
   loveNum: number;
@@ -23,10 +29,4 @@ export class Diary {
     nullable: true,
   })
   createTime: string;
-
-  @UpdateDateColumn({
-    type: "timestamp",
-    nullable: true,
-  })
-  updateTime: string;
 }

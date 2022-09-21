@@ -1,3 +1,6 @@
+import { MessageBoardModule } from "./messageBoard/messageboard.module";
+import { MessageBoardService } from "./messageBoard/messageboard.service";
+import { MessageBoardController } from "./messageBoard/messageboard.controller";
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { APP_FILTER } from "@nestjs/core";
 import { UserModule } from "./user/user.module";
@@ -10,12 +13,13 @@ import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 // import { Log4jsModule } from "./lib/log4js/log4js.module";
 // import { LOG4JS_PROVIDER } from "./lib/log4js/log4js.constants";
-import { TestModule } from './test/test.module';
-import { LoggerModule } from 'nestjs-pino';
+import { TestModule } from "./test/test.module";
+import { LoggerModule } from "nestjs-pino";
 
 @Module({
   imports: [
-    UserModule,
+    MessageBoardModule,
+    // UserModule,
     AuthModule,
     DiaryModule,
     ArticleModule,
@@ -42,6 +46,7 @@ import { LoggerModule } from 'nestjs-pino';
   ],
   controllers: [AppController],
   providers: [
+    // MessageBoardService,
     {
       provide: APP_FILTER,
       // useValue: new HttpExceptionFilter(),

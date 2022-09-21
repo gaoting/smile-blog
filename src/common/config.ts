@@ -1,4 +1,7 @@
 import { Article } from "./../article/article.entity";
+import { Diary } from "./../diary/diary.entity";
+
+const entitiesList = [Article, Diary];
 
 const productConfig = {
   type: "mysql",
@@ -7,11 +10,11 @@ const productConfig = {
   username: "root",
   password: "12345678",
   database: "smile_blog",
-  entities: [Article],
+  entities: entitiesList,
   autoLoadEntities: true,
   synchronize: true,
   logging: "all",
-}
+};
 
 const devConfig = {
   type: "mysql",
@@ -20,13 +23,12 @@ const devConfig = {
   username: "root",
   password: "12345678",
   database: "smile_blog",
-  entities: [Article],
+  entities: entitiesList,
   autoLoadEntities: true,
   synchronize: true,
   logging: "all",
-}
-
+};
 
 const config = process.env.NODE_ENV ? productConfig : devConfig;
- 
+
 export default config;

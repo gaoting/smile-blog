@@ -133,19 +133,17 @@ let ArticleService = class ArticleService {
         };
     }
     async updated(obj) {
-        console.log(obj, "ooooooosb");
         const { id, title, tags, author, types, content } = obj;
         const result = await this.articleService.findOne({ where: { id } });
-        console.log(result, "sbsbsbsb");
         if (!result) {
             throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
         }
         let article = new article_entity_1.Article();
-        article.title = obj.title;
-        article.tags = obj.tags;
-        article.author = obj.author;
-        article.types = obj.types;
-        article.content = obj.content;
+        article.title = title;
+        article.tags = tags;
+        article.author = author;
+        article.types = types;
+        article.content = content;
         await this.articleService.update(id, article);
         return { list: result, code: 200, message: "修改ok" };
     }

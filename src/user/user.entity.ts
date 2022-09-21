@@ -1,9 +1,12 @@
+import { MessageBoard } from './../messageBoard/messageboard.entity';
+
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 
 @Entity()
@@ -28,4 +31,7 @@ export class User {
 
   @UpdateDateColumn({ type: "timestamp" })
   updateTime: string;
+
+  @OneToMany(type=> MessageBoard, messageBoard => messageBoard.userName)
+  messageBoard: MessageBoard[]
 }

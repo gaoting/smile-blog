@@ -37,19 +37,14 @@ let DiaryService = class DiaryService {
             pageSize: pageSize,
             current: current,
         };
-        console.log(data, "ddddddddddddd1111111");
         return data;
     }
     async create(obj) {
+        console.log(obj, 'ooooooooodd');
         let diaryData = new diary_entity_1.Diary();
-        try {
-            diaryData.content = obj.content;
-            const newArticle = await this.repository.save(diaryData);
-            return { data: newArticle, message: "创建ok" };
-        }
-        catch (error) {
-            throw new common_1.HttpException(error, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        diaryData.content = obj.content;
+        await this.repository.save(diaryData);
+        return { code: 200, message: "创建ok" };
     }
     async setLove(obj) {
         const { id, loveNum } = obj;

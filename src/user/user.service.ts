@@ -9,7 +9,7 @@ var bcrypt = require("bcrypt");
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly user: Repository<User>
+    public readonly user: Repository<User>
   ) {}
 
   async registerUser(body): Promise<any> {
