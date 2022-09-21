@@ -15,8 +15,8 @@ export class Article {
   @Column({ type: "varchar", length: 20, default: "", nullable: true })
   author: string;
 
-  @Column({ type: "varchar", length: 20, default: "", nullable: true })
-  tags: string;
+  @Column({ type: "int", default: null, nullable: true })
+  tags: number;
 
   @Column({ type: "varchar", length: 20, default: "", nullable: true })
   types: string;

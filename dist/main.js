@@ -8,6 +8,7 @@ const core_1 = require("@nestjs/core");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         bufferLogs: true,
+        logger: console,
     });
     app.enableCors();
     app.useStaticAssets("images");
@@ -18,8 +19,8 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, options);
     swagger_1.SwaggerModule.setup("api", app, document);
-    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     app.useGlobalFilters(new all_exceptions_filter_1.AllExceptionsFilter());
+    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     await app.listen(3300);
 }
 bootstrap();

@@ -133,15 +133,20 @@ let ArticleService = class ArticleService {
         };
     }
     async updated(obj) {
-        const { id } = obj, params = __rest(obj, ["id"]);
-        const qb = this.articleService
-            .createQueryBuilder("article")
-            .where("article.id=:id")
-            .setParameter("id", id);
-        const result = await qb.getOne();
-        if (!result)
+        console.log(obj, "ooooooosb");
+        const { id, title, tags, author, types, content } = obj;
+        const result = await this.articleService.findOne({ where: { id } });
+        console.log(result, "sbsbsbsb");
+        if (!result) {
             throw new common_1.HttpException(`id为${id}的文章不存在`, common_1.HttpStatus.BAD_REQUEST);
-        await this.articleService.update(id, params);
+        }
+        let article = new article_entity_1.Article();
+        article.title = obj.title;
+        article.tags = obj.tags;
+        article.author = obj.author;
+        article.types = obj.types;
+        article.content = obj.content;
+        await this.articleService.update(id, article);
         return { list: result, code: 200, message: "修改ok" };
     }
     async delete(id) {

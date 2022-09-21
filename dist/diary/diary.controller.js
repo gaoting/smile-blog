@@ -27,7 +27,6 @@ let DiaryController = class DiaryController {
         this.diaryService.create(body);
     }
     updateNum(body) {
-        console.log(body, "qqqqqqqqqqqqqqq");
         return this.diaryService.setLove(body);
     }
 };

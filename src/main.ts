@@ -10,6 +10,7 @@ import { NestFactory } from "@nestjs/core";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
+    logger: console,
   });
   // 处理跨域
   app.enableCors();
@@ -29,9 +30,9 @@ async function bootstrap() {
   // 全局注册错误的过滤器
   // const logger = app.get(Logger);
   // app.useLogger(app.get(Logger));
-
-  app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new TransformInterceptor());
+  
 
   await app.listen(3300);
 }

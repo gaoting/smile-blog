@@ -31,7 +31,6 @@ export class DiaryController {
   // 更新点赞量
   @Put("updateNum")
   updateNum(@Body() body): Promise<String> {
-    console.log(body, "qqqqqqqqqqqqqqq");
     return this.diaryService.setLove(body);
   }
 }

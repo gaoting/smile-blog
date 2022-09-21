@@ -33,13 +33,13 @@ export class UserController {
     const { userName, pwd } = body;
 
     const result = await this.authService.validateUser(userName, pwd);
-console.log(result, 'rerrrrrr')
+    console.log(result, "rerrrrrr");
     if (result) {
       return {
         code: 200,
         message: "登录ok",
         userName,
-        token: this.authService.certificate({ userName, pwd}), // 签发token
+        token: this.authService.certificate({ userName, pwd }), // 签发token
       };
     }
 

@@ -11,6 +11,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 // import { Log4jsModule } from "./lib/log4js/log4js.module";
 // import { LOG4JS_PROVIDER } from "./lib/log4js/log4js.constants";
 import { TestModule } from './test/test.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { TestModule } from './test/test.module';
     AuthModule,
     DiaryModule,
     ArticleModule,
-    // LoggerModule,
+    // LoggerModule.forRoot({ pinoHttp: { level: process.env.LOG_LEVEL } }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
         type: "mysql",

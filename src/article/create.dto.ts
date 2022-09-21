@@ -6,7 +6,7 @@ export class CreateDto {
   types: string;
   description: string;
   content: string;
-  tags: string;
+  tags: number;
   lookNum:number;
   loveNum:number;
   id:number;

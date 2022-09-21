@@ -4,9 +4,9 @@
  * @LastEditors: gaoting_fanhan 837082729@qq.com
  * @LastEditTime: 2022-08-16 15:35:27
  * @FilePath: /smile-blog-vue3/Users/smile/Coding/smile-blog/src/article/article.service.ts
- * @Description: 
- * 
- * Copyright (c) 2022 by gaoting_fanhan 837082729@qq.com, All Rights Reserved. 
+ * @Description:
+ *
+ * Copyright (c) 2022 by gaoting_fanhan 837082729@qq.com, All Rights Reserved.
  */
 
 import { InjectRepository } from "@nestjs/typeorm";
@@ -150,16 +150,20 @@ export class ArticleService {
 
   // 更新
   async updated(obj: CreateDto): Promise<any> {
-    const { id, ...params } = obj;
-    const qb = this.articleService
-      .createQueryBuilder("article")
-      .where("article.id=:id")
-      .setParameter("id", id);
-
-    const result = await qb.getOne();
-    if (!result)
+    console.log(obj, "ooooooosb");
+    const { id, title, tags, author, types, content } = obj;
+    const result = await this.articleService.findOne({ where: { id } });
+    console.log(result, "sbsbsbsb");
+    if (!result) {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
-    await this.articleService.update(id, params);
+    }
+    let article = new Article();
+    article.title = obj.title;
+    article.tags = obj.tags;
+    article.author = obj.author;
+    article.types = obj.types;
+    article.content = obj.content;
+    await this.articleService.update(id, article);
 
     return { list: result, code: 200, message: "修改ok" };
   }
