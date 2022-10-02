@@ -1,13 +1,3 @@
-/*
- * @Author: gaoting_fanhan 837082729@qq.com
- * @Date: 2022-04-13 10:58:36
- * @LastEditors: gaoting_fanhan 837082729@qq.com
- * @LastEditTime: 2022-08-18 17:01:32
- * @FilePath: /smile-blog-vue3/Users/smile/Coding/smile-blog/src/article/article.controller.ts
- * @Description: 
- * 
- * Copyright (c) 2022 by gaoting_fanhan 837082729@qq.com, All Rights Reserved. 
- */
 
 import {
   Controller,

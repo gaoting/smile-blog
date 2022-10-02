@@ -1,3 +1,4 @@
+
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, DeleteResult } from "typeorm";
 import { Diary } from "./diary.entity";
@@ -32,16 +33,16 @@ export class DiaryService {
     let data = {
       code: 200,
       list: posts,
-      total: total,
-      pageSize: pageSize,
-      current: current,
+      total: +total,
+      pageSize: +pageSize,
+      current: +current,
     };
- 
+
     return data;
   }
 
   async create(obj: DiaryDto): Promise<any> {
-    console.log(obj, 'ooooooooodd');
+    console.log(obj, "ooooooooodd");
     let diaryData = new Diary();
 
     diaryData.content = obj.content;
@@ -51,8 +52,10 @@ export class DiaryService {
 
   // 点赞
   async setLove(obj: any): Promise<any> {
+    console.log(obj, "----------ooo");
     const { id, loveNum } = obj;
     await this.repository.update(id, { loveNum: Math.abs(loveNum) });
-    return this.repository.findOne(id);
+    const result = await this.repository.findOne({ where: { id } });
+    return { list: result, code: 200, message: "更新ok" };
   }
 }

@@ -47,9 +47,9 @@ let ArticleService = class ArticleService {
         const posts = await qb.getMany();
         let data = {
             list: posts,
-            total: total,
-            pageSize: pageSize,
-            current: current,
+            total: +total,
+            pageSize: +pageSize,
+            current: +current,
             code: 200,
         };
         return params.id ? posts[0] : data;

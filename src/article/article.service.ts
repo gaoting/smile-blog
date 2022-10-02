@@ -35,9 +35,9 @@ export class ArticleService {
 
     let data = {
       list: posts,
-      total: total,
-      pageSize: pageSize,
-      current: current,
+      total: +total,
+      pageSize: +pageSize,
+      current: +current,
       code: 200,
     };
     return params.id ? posts[0] : data;

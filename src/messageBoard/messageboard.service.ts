@@ -37,9 +37,9 @@ export class MessageBoardService {
     let data = {
       code: 200,
       list: posts,
-      total: total,
-      pageSize: pageSize,
-      current: current,
+      total: +total,
+      pageSize: +pageSize,
+      current: +current,
     };
 
     return data;

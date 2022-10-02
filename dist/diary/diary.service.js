@@ -33,23 +33,25 @@ let DiaryService = class DiaryService {
         let data = {
             code: 200,
             list: posts,
-            total: total,
-            pageSize: pageSize,
-            current: current,
+            total: +total,
+            pageSize: +pageSize,
+            current: +current,
         };
         return data;
     }
     async create(obj) {
-        console.log(obj, 'ooooooooodd');
+        console.log(obj, "ooooooooodd");
         let diaryData = new diary_entity_1.Diary();
         diaryData.content = obj.content;
         await this.repository.save(diaryData);
         return { code: 200, message: "创建ok" };
     }
     async setLove(obj) {
+        console.log(obj, "----------ooo");
         const { id, loveNum } = obj;
         await this.repository.update(id, { loveNum: Math.abs(loveNum) });
-        return this.repository.findOne(id);
+        const result = await this.repository.findOne({ where: { id } });
+        return { list: result, code: 200, message: "更新ok" };
     }
 };
 DiaryService = __decorate([
