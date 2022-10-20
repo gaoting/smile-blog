@@ -21,14 +21,21 @@ export class ArticleService {
 
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
+ 
+    console.log(query, "tccccccccccc");
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
+    
     qb.orderBy("article.createTime", "DESC");
 
     const total = await qb.getCount();
     const { current, pageSize, ...params } = query;
     qb.limit(pageSize);
-    qb.andWhere(params);
+    // qb.andWhere(params);
+    if (query.tags) {
+      const { tags } = query;
+      qb.andWhere("article.tags=:tags", { tags });
+    }
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
@@ -141,7 +148,7 @@ export class ArticleService {
   async updated(obj: CreateDto): Promise<any> {
     const { id, title, tags, author, types, content } = obj;
     const result = await this.articleService.findOne({ where: { id } });
-  
+
     if (!result) {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     }

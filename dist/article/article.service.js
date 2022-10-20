@@ -36,13 +36,17 @@ let ArticleService = class ArticleService {
         this.articleService = articleService;
     }
     async findAll(query) {
+        console.log(query, "tccccccccccc");
         const qb = await this.articleService.createQueryBuilder("article");
         qb.where("1=1");
         qb.orderBy("article.createTime", "DESC");
         const total = await qb.getCount();
         const { current, pageSize } = query, params = __rest(query, ["current", "pageSize"]);
         qb.limit(pageSize);
-        qb.andWhere(params);
+        if (query.tags) {
+            const { tags } = query;
+            qb.andWhere("article.tags=:tags", { tags });
+        }
         qb.offset(pageSize * (current - 1));
         const posts = await qb.getMany();
         let data = {
