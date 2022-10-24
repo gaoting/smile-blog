@@ -18,8 +18,8 @@ export class Article {
   @Column({ type: "int", default: null, nullable: true })
   tags: number;
 
-  @Column({ type: "varchar", length: 20, default: "", nullable: true })
-  types: string;
+  @Column({ type: "int", default: null, nullable: true })
+  types: number;
 
   @Column({ type: "int", default: 0, nullable: true })
   lookNum: number;

@@ -26,8 +26,8 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "tags", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 20, default: "", nullable: true }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: "int", default: null, nullable: true }),
+    __metadata("design:type", Number)
 ], Article.prototype, "types", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "int", default: 0, nullable: true }),

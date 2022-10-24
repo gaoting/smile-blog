@@ -3,7 +3,7 @@ import { IsString } from "class-validator";
 export class CreateDto {
   title: string;
   author: string;
-  types: string;
+  types: number;
   description: string;
   content: string;
   tags: number;

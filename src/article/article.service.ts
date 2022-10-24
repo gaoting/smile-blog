@@ -21,11 +21,10 @@ export class ArticleService {
 
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
- 
     console.log(query, "tccccccccccc");
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
-    
+
     qb.orderBy("article.createTime", "DESC");
 
     const total = await qb.getCount();
@@ -36,6 +35,11 @@ export class ArticleService {
       const { tags } = query;
       qb.andWhere("article.tags=:tags", { tags });
     }
+    if (query.types) {
+      const { types } = query;
+      qb.andWhere("article.types=:types", { types });
+    }
+
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
