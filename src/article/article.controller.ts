@@ -1,4 +1,3 @@
-
 import {
   Controller,
   Get,
@@ -25,7 +24,7 @@ import {
 import { createWriteStream } from "fs";
 import { join } from "path";
 import { AuthGuard } from "@nestjs/passport";
-import { RolesGuard, Roles } from './../auth/role.guard';
+import { RolesGuard, Roles } from "./../auth/role.guard";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 const multer = require("multer");
@@ -39,8 +38,8 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Get("list")
- 
   findAll(@Query() query): Promise<any> {
+    // console.log(this.getIp(), 'yyyyyyyyyyyyyyyyyyyy');
     return this.articleService.findAll(query);
   }
 
@@ -57,7 +56,7 @@ export class ArticleController {
 
   @UseGuards(JwtAuthGuard)
   @Post("add")
-  @ApiBearerAuth('JWT')
+  @ApiBearerAuth("JWT")
   @Header("content-type", "application/json")
   // @Roles('admin','root')
   create(@Body() body) {

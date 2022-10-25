@@ -2,6 +2,7 @@ import { Injectable, NestMiddleware, Inject } from "@nestjs/common";
 import { Request, Response, NextFunction } from "express";
 import { LOG4JS_PROVIDER } from "./log4js.constants";
 import { Log4jsService } from "./log4js.service";
+const requestIp = require('request-ip');
 
 @Injectable()
 export class Log4jsMiddleware implements NestMiddleware {
@@ -11,7 +12,6 @@ export class Log4jsMiddleware implements NestMiddleware {
   ) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    // this.log4js.useLogger(req, res, next);
     next()
   }
 }

@@ -5,7 +5,6 @@ import { TransformInterceptor } from "./interceptor/transform.interceptor";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
 import { NestFactory } from "@nestjs/core";
-// import { Logger } from "nestjs-pino";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

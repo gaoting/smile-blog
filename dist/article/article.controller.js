@@ -85,7 +85,7 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)("add"),
-    (0, swagger_1.ApiBearerAuth)('JWT'),
+    (0, swagger_1.ApiBearerAuth)("JWT"),
     (0, common_1.Header)("content-type", "application/json"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
