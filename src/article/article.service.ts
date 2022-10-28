@@ -162,6 +162,7 @@ export class ArticleService {
     article.author = author;
     article.types = types;
     article.content = content;
+    article.picture = obj.picture;
     await this.articleService.update(id, article);
 
     return { list: result, code: 200, message: "修改ok" };
