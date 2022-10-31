@@ -10,6 +10,5 @@ export class CreateDto {
   lookNum:number;
   loveNum:number;
   id:number;
-  activeKey:string;
   picture: string;
 }

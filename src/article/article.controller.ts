@@ -49,9 +49,10 @@ export class ArticleController {
   }
 
   @Post("searchList")
-  @Header("content-type", "application/json")
-  searchList(@Query() query): Promise<any> {
-    return this.articleService.searchNum(query);
+  // @Header("content-type", "application/json")
+  searchList(@Body() body): Promise<any> {
+    console.log(body,'000002222');
+    return this.articleService.searchNum(body);
   }
 
   @UseGuards(JwtAuthGuard)

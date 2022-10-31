@@ -54,10 +54,6 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "picture", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "varchar", length: 2, default: "2", nullable: true }),
-    __metadata("design:type", String)
-], Article.prototype, "activeKey", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: "int", default: null, nullable: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "preId", void 0);

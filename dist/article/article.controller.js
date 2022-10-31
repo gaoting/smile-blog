@@ -32,8 +32,9 @@ let ArticleController = class ArticleController {
     findById(id) {
         return this.articleService.findById(id);
     }
-    searchList(query) {
-        return this.articleService.searchNum(query);
+    searchList(body) {
+        console.log(body, '000002222');
+        return this.articleService.searchNum(body);
     }
     create(body) {
         return this.articleService.add(body);
@@ -76,8 +77,7 @@ __decorate([
 ], ArticleController.prototype, "findById", null);
 __decorate([
     (0, common_1.Post)("searchList"),
-    (0, common_1.Header)("content-type", "application/json"),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

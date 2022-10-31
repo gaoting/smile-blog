@@ -39,9 +39,6 @@ export class Article {
   @Column({ type: "text", nullable: true })
   picture: string;
 
-  @Column({ type: "varchar", length: 2, default: "2", nullable: true })
-  activeKey: string;
-
   @Column({ type: "int", default: null, nullable: true })
   preId: number;
 

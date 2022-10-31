@@ -136,7 +136,7 @@ export class ArticleService {
     article.author = obj.author;
     article.types = obj.types;
     article.content = obj.content;
-    article.activeKey = obj.activeKey;
+
     article.picture = obj.picture;
     article.description = obj.description
       ? obj.description
@@ -163,6 +163,9 @@ export class ArticleService {
     article.types = types;
     article.content = content;
     article.picture = obj.picture;
+    article.description = obj.description
+      ? obj.description
+      : obj.content?.substring(0, 300);
     await this.articleService.update(id, article);
 
     return { list: result, code: 200, message: "修改ok" };

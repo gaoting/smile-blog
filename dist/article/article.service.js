@@ -129,7 +129,6 @@ let ArticleService = class ArticleService {
         article.author = obj.author;
         article.types = obj.types;
         article.content = obj.content;
-        article.activeKey = obj.activeKey;
         article.picture = obj.picture;
         article.description = obj.description
             ? obj.description
@@ -141,6 +140,7 @@ let ArticleService = class ArticleService {
         };
     }
     async updated(obj) {
+        var _a;
         const { id, title, tags, author, types, content } = obj;
         const result = await this.articleService.findOne({ where: { id } });
         if (!result) {
@@ -153,6 +153,9 @@ let ArticleService = class ArticleService {
         article.types = types;
         article.content = content;
         article.picture = obj.picture;
+        article.description = obj.description
+            ? obj.description
+            : (_a = obj.content) === null || _a === void 0 ? void 0 : _a.substring(0, 300);
         await this.articleService.update(id, article);
         return { list: result, code: 200, message: "修改ok" };
     }
