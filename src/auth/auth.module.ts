@@ -1,4 +1,4 @@
-import { UserModule } from "./../user/user.module";
+
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { PassportModule } from "@nestjs/passport";

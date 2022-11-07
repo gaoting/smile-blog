@@ -23,8 +23,11 @@ export class User {
   @Column({ type: "text", default: null, nullable: true })
   avatar: string;
 
-  @Column({ type: "varchar", length: 20, default: "未知", nullable: true })
+  @Column({ type: "varchar", length: 20, default: "未知IP", nullable: true })
   IP: string;
+
+  @Column({ type: "varchar", length: 20, default: "未知位置", nullable: true })
+  city: string;
 
   @CreateDateColumn({ type: "timestamp" })
   createTime: string;

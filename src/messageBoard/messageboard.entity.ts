@@ -24,6 +24,13 @@ export class MessageBoard {
   @Column({ type: "int", default: 0, nullable: true })
   loveNum: number;
 
+  @Column({ type: "varchar", length: 20, default: "未知IP", nullable: true })
+  IP: string;
+
+  @Column({ type: "varchar", length: 20, default: "未知位置", nullable: true })
+  city: string;
+
+
   @CreateDateColumn({
     type: "timestamp",
     nullable: true,

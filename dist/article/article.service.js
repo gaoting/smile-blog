@@ -31,12 +31,14 @@ const common_1 = require("@nestjs/common");
 const fsExtra = require("fs-extra");
 const fileRootPath = "./images";
 const glob = require("glob");
+const messageboard_entity_1 = require("./../messageBoard/messageboard.entity");
+let flowNum = 0;
 let ArticleService = class ArticleService {
-    constructor(articleService) {
+    constructor(articleService, messageBoardService) {
         this.articleService = articleService;
+        this.messageBoardService = messageBoardService;
     }
     async findAll(query) {
-        console.log(query, "tccccccccccc");
         const qb = await this.articleService.createQueryBuilder("article");
         qb.where("1=1");
         qb.orderBy("article.createTime", "DESC");
@@ -53,12 +55,16 @@ let ArticleService = class ArticleService {
         }
         qb.offset(pageSize * (current - 1));
         const posts = await qb.getMany();
+        const messagesNum = await this.messageBoardService.createQueryBuilder("MessageBoard").where("1=1").getCount();
+        flowNum++;
         let data = {
             list: posts,
             total: +total,
             pageSize: +pageSize,
             current: +current,
             code: 200,
+            flowNum: flowNum,
+            messagesNum: messagesNum,
         };
         return params.id ? posts[0] : data;
     }
@@ -182,6 +188,8 @@ let ArticleService = class ArticleService {
 ArticleService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(article_entity_1.Article)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(messageboard_entity_1.MessageBoard)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], ArticleService);
 exports.ArticleService = ArticleService;

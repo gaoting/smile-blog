@@ -13,11 +13,16 @@ const article_controller_1 = require("./article.controller");
 const article_service_1 = require("./article.service");
 const article_entity_1 = require("./article.entity");
 const typeorm_1 = require("@nestjs/typeorm");
+const messageboard_entity_1 = require("./../messageBoard/messageboard.entity");
 let ArticleModule = class ArticleModule {
 };
 ArticleModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([article_entity_1.Article]), auth_module_1.AuthModule],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([messageboard_entity_1.MessageBoard]),
+            typeorm_1.TypeOrmModule.forFeature([article_entity_1.Article]),
+            auth_module_1.AuthModule,
+        ],
         controllers: [article_controller_1.ArticleController],
         providers: [article_service_1.ArticleService],
     })

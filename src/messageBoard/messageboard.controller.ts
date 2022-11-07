@@ -13,6 +13,8 @@ import {
 import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { MessageBoardService } from "./messageboard.service";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+const fetch = require("node-fetch");
+import { IpAddress } from "../decorators/info.decorator";
 
 @ApiTags("留言板")
 @Controller("api/messageboard")
@@ -21,7 +23,6 @@ export class MessageBoardController {
 
   @Get("list")
   findAll(@Query() query): Promise<any> {
-    console.log(query, 'qqqqqqq-mmm');
     return this.messageBoardService.findAll(query);
   }
 
@@ -29,8 +30,8 @@ export class MessageBoardController {
   @Post("add")
   @ApiBearerAuth("JWT")
   @Header("content-type", "application/json")
-  create(@Body() body) {
-    this.messageBoardService.create(body);
+  create(@Body() body, @IpAddress() clinetIp: string) {
+    this.messageBoardService.create(body, clinetIp);
   }
 
   // 更新点赞量

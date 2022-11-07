@@ -11,17 +11,23 @@ const glob = require("glob");
 // import { getNowTime } from "../filters/time";
 import * as dayjs from "dayjs";
 import { CreateDto } from "./create.dto";
+import { MessageBoardService } from "./../messageBoard/messageboard.service";
+import { MessageBoard } from "./../messageBoard/messageboard.entity";
+
+let flowNum = 0;
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectRepository(Article)
-    private readonly articleService: Repository<Article>
+    private readonly articleService: Repository<Article>,
+
+    @InjectRepository(MessageBoard)
+    private readonly messageBoardService: Repository<MessageBoard>
   ) {}
 
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
-    console.log(query, "tccccccccccc");
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
 
@@ -43,13 +49,17 @@ export class ArticleService {
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
+    const messagesNum = await this.messageBoardService.createQueryBuilder("MessageBoard").where("1=1").getCount();
 
+    flowNum++;
     let data = {
       list: posts,
       total: +total,
       pageSize: +pageSize,
       current: +current,
       code: 200,
+      flowNum: flowNum,
+      messagesNum: messagesNum,
     };
     return params.id ? posts[0] : data;
   }

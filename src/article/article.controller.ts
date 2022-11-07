@@ -39,7 +39,6 @@ export class ArticleController {
 
   @Get("list")
   findAll(@Query() query): Promise<any> {
-    // console.log(this.getIp(), 'yyyyyyyyyyyyyyyyyyyy');
     return this.articleService.findAll(query);
   }
 
