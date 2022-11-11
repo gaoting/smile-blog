@@ -7,14 +7,14 @@ import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import { DiaryModule } from "./diary/diary.module";
 import { ArticleModule } from "./article/article.module";
-import { Module } from "@nestjs/common";
+
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-// import { Log4jsModule } from "./lib/log4js/log4js.module";
-// import { LOG4JS_PROVIDER } from "./lib/log4js/log4js.constants";
 import { TestModule } from "./test/test.module";
 import { LoggerModule } from "nestjs-pino";
+import { Module } from "@nestjs/common";
+import { RedisModule } from "@liaoliaots/nestjs-redis";
 
 @Module({
   imports: [
@@ -23,7 +23,16 @@ import { LoggerModule } from "nestjs-pino";
     AuthModule,
     DiaryModule,
     ArticleModule,
-    // LoggerModule.forRoot({ pinoHttp: { level: process.env.LOG_LEVEL } }),
+    RedisModule.forRoot({
+      closeClient: true,
+      config: {
+        namespace: "counter",
+        host: "127.0.0.1",
+        port: 6379,
+        password: "12345678",
+        db: 11,
+      },
+    }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
         type: "mysql",
@@ -41,12 +50,12 @@ import { LoggerModule } from "nestjs-pino";
         timezone: "+08:00",
       }),
     }),
+
     TestModule,
     // Log4jsModule,
   ],
   controllers: [AppController],
   providers: [
-    // MessageBoardService,
     {
       provide: APP_FILTER,
       // useValue: new HttpExceptionFilter(),

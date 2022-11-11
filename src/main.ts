@@ -5,11 +5,13 @@ import { TransformInterceptor } from "./interceptor/transform.interceptor";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { AllExceptionsFilter } from "./filters/all-exceptions.filter";
 import { NestFactory } from "@nestjs/core";
+import { RedisModule } from "nestjs-redis";
+import { Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
-    logger: ['error','warn','debug'],
+    logger: ["error", "warn", "debug"],
   });
   // 处理跨域
   app.enableCors();
@@ -23,17 +25,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-
   SwaggerModule.setup("api", app, document);
 
-  // 全局注册错误的过滤器
-  // const logger = app.get(Logger);
-  // app.useLogger(app.get(Logger));
 
-  
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
-  
 
   await app.listen(3300);
 }

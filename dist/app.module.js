@@ -13,11 +13,12 @@ const core_1 = require("@nestjs/core");
 const auth_module_1 = require("./auth/auth.module");
 const diary_module_1 = require("./diary/diary.module");
 const article_module_1 = require("./article/article.module");
-const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const test_module_1 = require("./test/test.module");
+const common_1 = require("@nestjs/common");
+const nestjs_redis_1 = require("@liaoliaots/nestjs-redis");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -27,6 +28,16 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             diary_module_1.DiaryModule,
             article_module_1.ArticleModule,
+            nestjs_redis_1.RedisModule.forRoot({
+                closeClient: true,
+                config: {
+                    namespace: "counter",
+                    host: "127.0.0.1",
+                    port: 6379,
+                    password: "12345678",
+                    db: 11,
+                },
+            }),
             typeorm_1.TypeOrmModule.forRootAsync({
                 useFactory: async () => ({
                     type: "mysql",

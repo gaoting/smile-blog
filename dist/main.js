@@ -8,7 +8,7 @@ const core_1 = require("@nestjs/core");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         bufferLogs: true,
-        logger: ['error', 'warn', 'debug'],
+        logger: ["error", "warn", "debug"],
     });
     app.enableCors();
     app.useStaticAssets("images");
