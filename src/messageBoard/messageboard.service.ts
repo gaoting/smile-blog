@@ -9,7 +9,7 @@ import {
   HttpStatus,
   Controller,
 } from "@nestjs/common";
-const fetch = require("node-fetch");
+import fetch from "node-fetch"
 
 @Injectable()
 export class MessageBoardService {
@@ -55,7 +55,7 @@ export class MessageBoardService {
       let url = `https://restapi.amap.com/v3/ip?key=310d88b1f76599ee6a4b0bd50ba6bbd8&ip=${ip}`;
       try {
         let res = await fetch(url);
-        let ipResult = await res.json();
+        let ipResult:any = await res.json();
         diaryData.IP = ip;
         diaryData.city = ipResult.city;
       } catch (err) {

@@ -3,7 +3,7 @@ import { Repository, DeleteResult } from "typeorm";
 import { User } from "./user.entity";
 import { Injectable, HttpStatus, HttpException } from "@nestjs/common";
 var bcrypt = require("bcrypt");
-const fetch = require("node-fetch");
+import fetch from "node-fetch"
 
 @Injectable()
 export class UserService {
@@ -62,7 +62,7 @@ export class UserService {
     let userInfo = new User();
     const ip = clinetIp ? clinetIp.split("f:")[1] : "";
     if (ip) {
-      const ipResult = await fetch(
+      const ipResult:any = await fetch(
         `https://restapi.amap.com/v3/ip?key=310d88b1f76599ee6a4b0bd50ba6bbd8&ip=${ip}`
       )
         .then((res) => res.json())

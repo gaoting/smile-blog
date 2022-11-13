@@ -25,7 +25,7 @@ import { createWriteStream } from "fs";
 import { join } from "path";
 import { AuthGuard } from "@nestjs/passport";
 import { RolesGuard, Roles } from "./../auth/role.guard";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 const multer = require("multer");
 const fs = require("fs");

@@ -2,8 +2,6 @@ import { Controller, Post, CACHE_MANAGER, Inject } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { ClientsModule, ClientProxy } from "@nestjs/microservices";
-import { RedisService } from "@liaoliaots/nestjs-redis";
-import * as Redis from "ioredis";
 
 @Controller("api")
 export class AppController {

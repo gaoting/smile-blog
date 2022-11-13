@@ -3,7 +3,7 @@ import { Body, Controller, Post, Header, UseGuards, Get } from "@nestjs/common";
 import { ApiTags, ApiOperation } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
 import { IpAddress } from "../decorators/info.decorator";
-const fetch = require("node-fetch");
+import fetch from "node-fetch"
 import { AuthService } from "../auth/auth.service";
 import { User } from "./user.entity";
 

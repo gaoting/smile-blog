@@ -12,8 +12,9 @@ import {
 } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { MessageBoardService } from "./messageboard.service";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
-const fetch = require("node-fetch");
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+// import fetch from "node-fetch"
+import fetch from "node-fetch"
 import { IpAddress } from "../decorators/info.decorator";
 
 @ApiTags("留言板")

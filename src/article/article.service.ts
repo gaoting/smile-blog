@@ -2,7 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Article } from "./article.entity";
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-// import { http } from "src/common/http";
+// import { http } from "../common/http";
 // const multer = require("multer");
 // const fs = require("fs");
 const fsExtra = require("fs-extra");
