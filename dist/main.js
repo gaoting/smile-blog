@@ -5,6 +5,7 @@ const swagger_1 = require("@nestjs/swagger");
 const transform_interceptor_1 = require("./interceptor/transform.interceptor");
 const all_exceptions_filter_1 = require("./filters/all-exceptions.filter");
 const core_1 = require("@nestjs/core");
+const ws_adapter_1 = require("./../src/socket-test/ws.adapter");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         bufferLogs: true,
@@ -12,6 +13,7 @@ async function bootstrap() {
     });
     app.enableCors();
     app.useStaticAssets("images");
+    app.useWebSocketAdapter(new ws_adapter_1.WsAdapter(app));
     const options = new swagger_1.DocumentBuilder()
         .setTitle("Nodejs + Vue3.js 全栈项目-博客API")
         .setDescription("smile 博客api")

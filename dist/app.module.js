@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const socket_test_gateway_1 = require("./socket-test/socket-test.gateway");
 const messageboard_module_1 = require("./messageBoard/messageboard.module");
 const http_exception_filter_1 = require("./filters/http-exception.filter");
 const core_1 = require("@nestjs/core");
@@ -57,6 +58,7 @@ AppModule = __decorate([
         ],
         controllers: [app_controller_1.AppController],
         providers: [
+            socket_test_gateway_1.SocketTestGateway,
             {
                 provide: core_1.APP_FILTER,
                 useClass: http_exception_filter_1.HttpExceptionFilter,

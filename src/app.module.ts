@@ -1,6 +1,7 @@
+// import { EventsModule } from "./events/events.module";
+import { SocketTestModule } from "./socket-test/socket-test.module";
+import { SocketTestGateway } from "./socket-test/socket-test.gateway";
 import { MessageBoardModule } from "./messageBoard/messageboard.module";
-import { MessageBoardService } from "./messageBoard/messageboard.service";
-import { MessageBoardController } from "./messageBoard/messageboard.controller";
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { APP_FILTER } from "@nestjs/core";
 import { UserModule } from "./user/user.module";
@@ -15,14 +16,26 @@ import { TestModule } from "./test/test.module";
 import { LoggerModule } from "nestjs-pino";
 import { Module } from "@nestjs/common";
 import { RedisModule } from "@liaoliaots/nestjs-redis";
+import { UploadModule } from "./upload/upload.module";
+import { MulterModule } from "@nestjs/platform-express";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
+    // EventsModule,
+    MulterModule.register({
+      dest: "./files",
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "files"),
+    }),
     MessageBoardModule,
     // UserModule,
     AuthModule,
     DiaryModule,
     ArticleModule,
+    SocketTestModule,
     RedisModule.forRoot({
       closeClient: true,
       config: {
@@ -52,8 +65,10 @@ import { RedisModule } from "@liaoliaots/nestjs-redis";
     }),
 
     TestModule,
-    // Log4jsModule,
+
+    UploadModule,
   ],
+
   controllers: [AppController],
   providers: [
     {
