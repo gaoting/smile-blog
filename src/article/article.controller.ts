@@ -30,7 +30,7 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const fileRootPath = "./images";
+const fileRootPath = "./public";
 
 @ApiTags("文章")
 @Controller("api/article")
@@ -50,7 +50,7 @@ export class ArticleController {
   @Post("searchList")
   // @Header("content-type", "application/json")
   searchList(@Body() body): Promise<any> {
-    console.log(body,'000002222');
+    console.log(body, "000002222");
     return this.articleService.searchNum(body);
   }
 
@@ -93,7 +93,7 @@ export class ArticleController {
     FileInterceptor("file", {
       storage: multer.diskStorage({
         destination: async (req, file, cb) => {
-          const path = `${fileRootPath}/upload`;
+          const path = `${fileRootPath}/article`;
           // ensureDir 确保目录的存在。如果目录结构不存在,就创建一个
           await fsExtra.ensureDir(path);
           if (!fs.existsSync(path)) {

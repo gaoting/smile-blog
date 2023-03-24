@@ -12,7 +12,7 @@ export class Upload {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "varchar", length: 30, default: "", nullable: true })
+  @Column({ type: "text",  nullable: true })
   fileName: string;
 
   @Column({ type: "text", nullable: true })

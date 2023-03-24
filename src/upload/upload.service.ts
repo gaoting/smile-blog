@@ -17,7 +17,7 @@ export class UploadService {
     console.log("[ file------- ] >", file);
     let entity = new Upload();
     entity.fileName = file.originalname;
-    entity.url = file.path;
+    entity.url = file.originalname;
     entity.date = dayjs(file.date).format("YYYY-MM-DD HH:mm:ss");
     await this.uploadService.save(entity);
     return { result: entity, code: 200, message: "add ok" };
