@@ -18,10 +18,10 @@ import * as uuid from "uuid";
         filename: (req, file, cb) => {
           // 在此处自定义保存后的文件名称 + 防止转译乱码
           // console.log('[ req, file, cb ] >', file, cb)
-          file.originalname= Buffer.from(file.originalname, "latin1").toString(
+          file.originalname = Buffer.from(file.originalname, "latin1").toString(
             "utf8"
           );
-          console.log('[ file.originalname ] >', )
+          console.log("[ file.originalname ] >");
           return cb(null, file.originalname);
         },
       }),
@@ -32,4 +32,3 @@ import * as uuid from "uuid";
   providers: [UploadService],
 })
 export class UploadModule {}
-

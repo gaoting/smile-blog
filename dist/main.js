@@ -5,15 +5,19 @@ const swagger_1 = require("@nestjs/swagger");
 const transform_interceptor_1 = require("./interceptor/transform.interceptor");
 const all_exceptions_filter_1 = require("./filters/all-exceptions.filter");
 const core_1 = require("@nestjs/core");
-const ws_adapter_1 = require("./../src/socket-test/ws.adapter");
+const platform_ws_1 = require("@nestjs/platform-ws");
+const express = require("express");
+const path_1 = require("path");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule, {
         bufferLogs: true,
         logger: ["error", "warn", "debug"],
+        cors: true,
     });
     app.enableCors();
-    app.useStaticAssets("images");
-    app.useWebSocketAdapter(new ws_adapter_1.WsAdapter(app));
+    app.useStaticAssets("public");
+    const rootDir = (0, path_1.join)(__dirname, "..");
+    app.use("/public", express.static((0, path_1.join)(rootDir, "public")));
     const options = new swagger_1.DocumentBuilder()
         .setTitle("Nodejs + Vue3.js 全栈项目-博客API")
         .setDescription("smile 博客api")
@@ -21,6 +25,7 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, options);
     swagger_1.SwaggerModule.setup("api", app, document);
+    app.useWebSocketAdapter(new platform_ws_1.WsAdapter(app));
     app.useGlobalFilters(new all_exceptions_filter_1.AllExceptionsFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     await app.listen(3300);

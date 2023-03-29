@@ -1,18 +1,19 @@
+import fetch from "node-fetch";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Article } from "./article.entity";
 import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
-// import { http } from "../common/http";
-// const multer = require("multer");
-// const fs = require("fs");
 const fsExtra = require("fs-extra");
 const fileRootPath = "./images";
 const glob = require("glob");
-// import { getNowTime } from "../filters/time";
 import * as dayjs from "dayjs";
 import { CreateDto } from "./create.dto";
 import { MessageBoardService } from "./../messageBoard/messageboard.service";
 import { MessageBoard } from "./../messageBoard/messageboard.entity";
+import fs from "fs";
+import request from "request";
+import cheerio from "cheerio";
+import axios from "axios";
 
 let flowNum = 0;
 
@@ -26,8 +27,34 @@ export class ArticleService {
     private readonly messageBoardService: Repository<MessageBoard>
   ) {}
 
+  async weather() {
+    let dataas = await axios.get(
+      "https://tianqi.moji.com/weather/china/shanghai/shanghai"
+    );
+    let $ = cheerio.load(dataas.data);
+    let temp = $(".wea_weather em").text().trim() + "℃";
+    let desc = $(".wea_weather b").text().trim();
+    let water = $(".wea_about span").text().trim();
+    let win = $(".wea_about em").text().trim();
+    let tips = $(".wea_tips em").text().trim();
+    let city = $(".search_default em").text().trim();
+    let imgs = $(".wea_weather span img").attr("src");
+    let words = [
+      `${imgs}`,
+      `今日: ${city}`,
+      `天气: ${desc}`,
+      `温度：${temp}`,
+      `湿度：${water}`,
+      `风力：${win}`,
+
+      tips,
+    ];
+    console.log("[ words ] >", words);
+    return words;
+  }
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
+    console.log("[ aaaaaaa ] >");
     const qb = await this.articleService.createQueryBuilder("article");
     qb.where("1=1");
 
@@ -49,9 +76,13 @@ export class ArticleService {
     qb.offset(pageSize * (current - 1));
 
     const posts = await qb.getMany();
-    const messagesNum = await this.messageBoardService.createQueryBuilder("MessageBoard").where("1=1").getCount();
+    const messagesNum = await this.messageBoardService
+      .createQueryBuilder("MessageBoard")
+      .where("1=1")
+      .getCount();
 
     flowNum++;
+
     let data = {
       list: posts,
       total: +total,
@@ -60,7 +91,9 @@ export class ArticleService {
       code: 200,
       flowNum: flowNum,
       messagesNum: messagesNum,
+      weather: await this.weather(),
     };
+
     return params.id ? posts[0] : data;
   }
 

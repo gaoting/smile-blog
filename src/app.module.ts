@@ -1,6 +1,5 @@
 // import { EventsModule } from "./events/events.module";
-import { SocketTestModule } from "./socket-test/socket-test.module";
-import { SocketTestGateway } from "./socket-test/socket-test.gateway";
+
 import { MessageBoardModule } from "./messageBoard/messageboard.module";
 import { HttpExceptionFilter } from "./filters/http-exception.filter";
 import { APP_FILTER } from "@nestjs/core";
@@ -35,7 +34,7 @@ import { join } from "path";
     AuthModule,
     DiaryModule,
     ArticleModule,
-    SocketTestModule,
+
     RedisModule.forRoot({
       closeClient: true,
       config: {

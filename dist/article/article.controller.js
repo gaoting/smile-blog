@@ -21,7 +21,7 @@ const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const multer = require("multer");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
-const fileRootPath = "./images";
+const fileRootPath = "./public";
 let ArticleController = class ArticleController {
     constructor(articleService) {
         this.articleService = articleService;
@@ -33,7 +33,7 @@ let ArticleController = class ArticleController {
         return this.articleService.findById(id);
     }
     searchList(body) {
-        console.log(body, '000002222');
+        console.log(body, "000002222");
         return this.articleService.searchNum(body);
     }
     create(body) {
@@ -124,7 +124,7 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file", {
         storage: multer.diskStorage({
             destination: async (req, file, cb) => {
-                const path = `${fileRootPath}/upload`;
+                const path = `${fileRootPath}/article`;
                 await fsExtra.ensureDir(path);
                 if (!fs.existsSync(path)) {
                     fs.mkdirSync(path);
