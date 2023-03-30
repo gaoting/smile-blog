@@ -34,6 +34,9 @@ const glob = require("glob");
 const messageboard_entity_1 = require("./../messageBoard/messageboard.entity");
 const cheerio_1 = require("cheerio");
 const axios_1 = require("axios");
+const path_1 = require("path");
+const multer = require("multer");
+const fs_1 = require("fs");
 let flowNum = 0;
 let ArticleService = class ArticleService {
     constructor(articleService, messageBoardService) {
@@ -41,7 +44,8 @@ let ArticleService = class ArticleService {
         this.messageBoardService = messageBoardService;
     }
     async weather() {
-        let dataas = await axios_1.default.get("https://tianqi.moji.com/weather/china/shanghai/shanghai");
+        const api = "https://tianqi.moji.com/weather/china/shanghai/shanghai";
+        let dataas = await axios_1.default.get(api);
         let $ = cheerio_1.default.load(dataas.data);
         let temp = $(".wea_weather em").text().trim() + "℃";
         let desc = $(".wea_weather b").text().trim();
@@ -50,6 +54,11 @@ let ArticleService = class ArticleService {
         let tips = $(".wea_tips em").text().trim();
         let city = $(".search_default em").text().trim();
         let imgs = $(".wea_weather span img").attr("src");
+        console.log("[dataas  ] >", dataas);
+        console.log("[ imgs ] >", imgs);
+        const imgDir = (0, path_1.join)(__dirname, "public");
+        let arr = imgs.split("/");
+        this.downloadFile(imgs, arr[arr.length - 1]);
         let words = [
             `${imgs}`,
             `今日: ${city}`,
@@ -61,6 +70,15 @@ let ArticleService = class ArticleService {
         ];
         console.log("[ words ] >", words);
         return words;
+    }
+    async downloadFile(uri, name) {
+        let filePath = `public/${name}`;
+        let res = await (0, axios_1.default)({ url: uri, responseType: "stream" });
+        let ws = (0, fs_1.createWriteStream)(filePath);
+        res.data.pipe(ws);
+        res.data.on("close", () => {
+            ws.close();
+        });
     }
     async findAll(query) {
         console.log("[ aaaaaaa ] >");

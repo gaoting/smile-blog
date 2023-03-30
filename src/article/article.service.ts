@@ -11,9 +11,14 @@ import { CreateDto } from "./create.dto";
 import { MessageBoardService } from "./../messageBoard/messageboard.service";
 import { MessageBoard } from "./../messageBoard/messageboard.entity";
 import fs from "fs";
-import request from "request";
 import cheerio from "cheerio";
 import axios from "axios";
+
+import * as path from "path";
+import { join } from "path";
+
+const multer = require("multer");
+import { createWriteStream } from "fs";
 
 let flowNum = 0;
 
@@ -27,10 +32,11 @@ export class ArticleService {
     private readonly messageBoardService: Repository<MessageBoard>
   ) {}
 
+  // 天气
+
   async weather() {
-    let dataas = await axios.get(
-      "https://tianqi.moji.com/weather/china/shanghai/shanghai"
-    );
+    const api = "https://tianqi.moji.com/weather/china/shanghai/shanghai";
+    let dataas = await axios.get(api);
     let $ = cheerio.load(dataas.data);
     let temp = $(".wea_weather em").text().trim() + "℃";
     let desc = $(".wea_weather b").text().trim();
@@ -39,6 +45,15 @@ export class ArticleService {
     let tips = $(".wea_tips em").text().trim();
     let city = $(".search_default em").text().trim();
     let imgs = $(".wea_weather span img").attr("src");
+
+    console.log("[dataas  ] >", dataas);
+
+    console.log("[ imgs ] >", imgs);
+    const imgDir = join(__dirname, "public");
+
+    let arr = imgs.split("/");
+    this.downloadFile(imgs, arr[arr.length - 1]);
+
     let words = [
       `${imgs}`,
       `今日: ${city}`,
@@ -52,6 +67,17 @@ export class ArticleService {
     console.log("[ words ] >", words);
     return words;
   }
+  // 存储到本地public
+  async downloadFile(uri, name) {
+    let filePath = `public/${name}`;
+    let res = await axios({ url: uri, responseType: "stream" });
+    let ws = createWriteStream(filePath);
+    res.data.pipe(ws);
+    res.data.on("close", () => {
+      ws.close();
+    });
+  }
+
   // 查询全部列表 带分页
   async findAll(query?: any): Promise<any> {
     console.log("[ aaaaaaa ] >");
