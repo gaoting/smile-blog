@@ -4,6 +4,7 @@ import { User } from "./user.entity";
 import { Injectable, HttpStatus, HttpException } from "@nestjs/common";
 var bcrypt = require("bcrypt");
 import fetch from "node-fetch"
+import * as puppeteer from 'puppeteer';
 
 @Injectable()
 export class UserService {
